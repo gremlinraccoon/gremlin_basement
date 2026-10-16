@@ -1,0 +1,229 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selection Page</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #2a3439;
+            min-height: 100vh;
+        }
+
+        /* Page title */
+        h1 {
+            text-align: center;
+            padding: 40px 20px;
+            color: #ccccff;
+        }
+
+        /* Three-column layout */
+        .selection-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+
+            width: 80%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Individual selection */
+        .selection {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            min-height: 200px;
+            background-color: #36454f;
+            border-radius: 12px;
+            border: 2px solid #1c2831;
+
+            text-decoration: none;
+            color: #ccccff;
+            font-size: 20px;
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        /* Hover effect */
+        .selection:hover {
+            background-color: #1c2831;
+            border-color: #010b13;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsive layout for tablets and phones */
+        @media (max-width: 768px) {
+            .selection-container {
+                grid-template-columns: repeat(2, 1fr);
+                width: 95%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .selection-container {
+                grid-template-columns: 1fr;
+            }
+
+            .selection {
+                min-height: 150px;
+            }
+        }
+
+        .selection-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .selection-content img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+
+        .selection-text {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: left;
+        }
+
+        .selection-text h3 {
+            font-size: 18px;
+            margin: 0;
+        }
+
+        .selection-text p {
+            font-size: 14px;
+            font-weight: normal;
+            color: #ccccff;
+            line-height: 1.5;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Select your Guess Who game</h1>
+
+    <div class="selection-container">
+
+        <a href="" class="selection">
+            <div class="selection-content">
+
+                <img src="images/example.jpg" alt="Example image">
+
+                <div class="selection-text">
+                    <h3>Option 1</h3>
+                    <p>
+                        This is a short description of the page.
+                        It appears below the title.
+                    </p>
+                </div>
+
+            </div>
+        </a>
+
+        <a href="" class="selection">
+            <div class="selection-content">
+
+                <img src="images/example.jpg" alt="Example image">
+
+                <div class="selection-text">
+                    <h3>Option 1</h3>
+                    <p>
+                        This is a short description of the page.
+                        It appears below the title.
+                    </p>
+                </div>
+
+            </div>
+        </a>
+
+        <a href="" class="selection">
+            <div class="selection-content">
+
+                <img src="images/example.jpg" alt="Example image">
+
+                <div class="selection-text">
+                    <h3>Option 1</h3>
+                    <p>
+                        This is a short description of the page.
+                        It appears below the title.
+                    </p>
+                </div>
+
+            </div>
+        </a>
+
+        <a href="" class="selection">
+            <div class="selection-content">
+
+                <img src="images/example.jpg" alt="Example image">
+
+                <div class="selection-text">
+                    <h3>Option 1</h3>
+                    <p>
+                        This is a short description of the page.
+                        It appears below the title.
+                    </p>
+                </div>
+
+            </div>
+        </a>
+
+        <a href="" class="selection">
+            <div class="selection-content">
+
+                <img src="images/example.jpg" alt="Example image">
+
+                <div class="selection-text">
+                    <h3>Option 1</h3>
+                    <p>
+                        This is a short description of the page.
+                        It appears below the title.
+                    </p>
+                </div>
+
+            </div>
+        </a>
+
+        <a href="" class="selection">
+            <div class="selection-content">
+
+                <img src="images/example.jpg" alt="Example image">
+
+                <div class="selection-text">
+                    <h3>Option 1</h3>
+                    <p>
+                        This is a short description of the page.
+                        It appears below the title.
+                    </p>
+                </div>
+
+            </div>
+        </a>
+
+    </div>
+
+</body>
+</html>
