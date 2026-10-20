@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genshin Guess Who</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #1c2831;
+            min-height: 100vh;
+        }
+
+        .selection-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 150px));
+            justify-content: space-between;
+            gap: 10px;
+
+            width: 100%;
+            padding: 20px;
+        }
+
+        .selection {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+            padding: 10px;
+
+            width: 100%;
+            max-width: 150px;
+            min-height: 200px;
+
+            background-color: #2B404E;
+            border-radius: 12px;
+            border: 2px solid #1A2227;
+
+            text-decoration: none;
+            color: #ccccff;
+            font-size: 16px;
+            text-align: center;
+
+            transition: 0.3s;
+
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .selection img {
+            width: 100%;
+            max-width: 120px;
+            height: 120px;
+            object-fit: cover;
+            display: block;
+            border-radius: 10px;
+        }
+
+        .selection h3 {
+            width: 100%;
+            text-align: center;
+            overflow-wrap: anywhere;
+        }
+
+        .selection:hover {
+            background-color: #0f1a22;
+            border-color: #010b13;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Appearance when a card is selected */
+        .selection.selected {
+            background-color: #111a20;
+            border-color: #080d11;
+        }
+
+        /* Turn the character image grayscale */
+        .selection.selected img {
+            filter: grayscale(100%);
+            opacity: 0.6;
+        }
+
+        .selection.selected h3 {
+            color: #888888;
+        }
+
+        .selection,
+        .selection img,
+        .selection h3 {
+            transition: background-color 0.3s ease,
+                border-color 0.3s ease,
+                filter 0.3s ease,
+                opacity 0.3s ease,
+                color 0.3s ease;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+
+            width: 100%;
+            padding: 20px;
+            background-color: #243540;
+            border-bottom: 2px solid #1A2227;
+        }
+
+        .switch-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            color: #ccccff;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Hide the default checkbox but keep it accessible */
+        .switch-option input {
+            position: absolute;
+            opacity: 0;
+            width: 1px;
+            height: 1px;
+        }
+
+        /* The switch track */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+            flex-shrink: 0;
+
+            background-color: #59656d;
+            border-radius: 24px;
+            transition: background-color 0.3s;
+        }
+
+        /* The switch knob */
+        .switch::before {
+            content: "";
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            left: 3px;
+            top: 3px;
+
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        /* ON state */
+        .switch-option input:checked + .switch {
+            background-color: #6c83d9;
+        }
+
+        .switch-option input:checked + .switch::before {
+            transform: translateX(20px);
+        }
+
+        /* Keyboard accessibility */
+        .switch-option input:focus-visible + .switch {
+            outline: 2px solid white;
+            outline-offset: 3px;
+        }
+
+        /* Reset button */
+        #resetButton {
+            padding: 9px 20px;
+            border: 1px solid #801818;
+            border-radius: 8px;
+
+            background-color: #A52A2A;
+            color: #33070D;
+            font-size: 14px;
+            font-weight: bold;
+
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #resetButton:hover {
+            background-color: #801818;
+            border: 1px solid #5a1013;
+        }
+
+        /* Remove selected cards from the grid display */
+        .selection-container.hide-selected .selection.selected {
+            display: none;
+        }
+
+        .selection[hidden] {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="controls">
+
+        <label class="switch-option">
+            <span>4-Star Characters</span>
+            <input type="checkbox" id="fourStar" checked>
+            <span class="switch"></span>
+        </label>
+
+        <label class="switch-option">
+            <span>5-Star Characters</span>
+            <input type="checkbox" id="fiveStar" checked>
+            <span class="switch"></span>
+        </label>
+
+        <label class="switch-option">
+            <span>NPCs</span>
+            <input type="checkbox" id="showNPC" checked>
+            <span class="switch"></span>
+        </label>
+
+        <label class="switch-option">
+            <span>Hide selected</span>
+            <input type="checkbox" id="hideSelected">
+            <span class="switch"></span>
+        </label>
+
+        <label class="switch-option">
+            <span>Show character gender</span>
+            <input type="checkbox" id="showGender">
+            <span class="switch"></span>
+        </label>
+
+        <button id="resetButton" type="button">Reset</button>
+
+    </div>
+
+    <div class="selection-container">
+
+        <div class="selection" data-rarity="4" data-gender="f">
+
+            <img src="../img/aino.png" alt="Image">
+
+            <h3>Aino</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="m">
+            
+            <img src="../img/albedo.png" alt="Image">
+
+            <h3>Albedo</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="m">
+            
+            <img src="../img/alhai.png" alt="Image">
+
+            <h3>Alhaitham</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+            
+            <img src="../img/aloy.png" alt="Image">
+
+            <h3>Aloy</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="m">
+            
+            <img src="../img/alyosha.png" alt="Image">
+
+            <h3>Alyosha</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="f">
+            
+            <img src="../img/amber.png" alt="Image">
+
+            <h3>Amber</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="m">
+            
+            <img src="../img/itto.png" alt="Image">
+
+            <h3>Arataki Itto</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+            
+            <img src="../img/arle.png" alt="Image">
+
+            <h3>Arlecchino</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="m">
+            
+            <img src="../img/baizhu.png" alt="Image">
+
+            <h3>Baizhu</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="f">
+            
+            <img src="../img/barb.png" alt="Image">
+
+            <h3>Barbara</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="f">
+            
+            <img src="../img/beidou.png" alt="Image">
+
+            <h3>Beidou</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="m">
+            
+            <img src="../img/benn.png" alt="Image">
+
+            <h3>Bennett</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="f">
+            
+            <img src="../img/candace.png" alt="Image">
+
+            <h3>Candace</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="f">
+            
+            <img src="../img/char.png" alt="Image">
+
+            <h3>Charlotte</h3>
+
+        </div>
+
+    </div>
+
+    
+    <script>
+        const selections = document.querySelectorAll(".selection");
+        const container = document.querySelector(".selection-container");
+
+        const fourStar = document.getElementById("fourStar");
+        const fiveStar = document.getElementById("fiveStar");
+        const NPC = document.getElementById("showNPC");
+        const hideSelected = document.getElementById("hideSelected");
+        const showGender = document.getElementById("showGender");
+        const resetButton = document.getElementById("resetButton");
+
+        // Filter characters by category
+        function filterCharacters() {
+            selections.forEach(selection => {
+                const rarity = selection.dataset.rarity;
+
+                let showCharacter = false;
+
+                if (rarity === "4" && fourStar.checked) {
+                    showCharacter = true;
+                }
+
+                if (rarity === "5" && fiveStar.checked) {
+                    showCharacter = true;
+                }
+
+                if (rarity === "npc" && NPC.checked) {
+                    showCharacter = true;
+                }
+
+                selection.hidden = !showCharacter;
+            });
+        }
+
+        function updateGenderEmojis() {
+            selections.forEach(selection => {
+                const heading = selection.querySelector("h3");
+                const gender = selection.dataset.gender;
+
+                // Save the original name once
+                if (!heading.dataset.originalName) {
+                    heading.dataset.originalName = heading.textContent;
+                }
+
+                if (showGender.checked) {
+                    let emoji = "";
+
+                    if (gender === "f") emoji = " ♀️";
+                    if (gender === "m") emoji = " ♂️";
+
+                    heading.textContent = heading.dataset.originalName + emoji;
+                } else {
+                    heading.textContent = heading.dataset.originalName;
+                }
+            });
+        }
+
+        showGender.addEventListener("change", updateGenderEmojis);
+
+        // Listen for changes to the rarity switches
+        fourStar.addEventListener("change", filterCharacters);
+        fiveStar.addEventListener("change", filterCharacters);
+        NPC.addEventListener("change", filterCharacters);
+
+        // Hide selected characters
+        hideSelected.addEventListener("change", () => {
+            container.classList.toggle(
+                "hide-selected",
+                hideSelected.checked
+            );
+        });
+
+        // Toggle character elimination
+        selections.forEach(selection => {
+            selection.addEventListener("click", () => {
+                selection.classList.toggle("selected");
+            });
+        });
+
+        
+        resetButton.addEventListener("click", () => {
+
+            // Clear all eliminated characters
+            selections.forEach(selection => {
+                selection.classList.remove("selected");
+            });
+
+            // Reapply the existing character filters
+            filterCharacters();
+
+        });
+
+
+        // Initial state
+        filterCharacters();
+        updateGenderEmojis();
+    </script>
+
+</body>
+</html>
