@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HSR Guess Who</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #1c2831;
+            min-height: 100vh;
+        }
+
+        .selection-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 150px));
+            justify-content: space-between;
+            gap: 10px;
+
+            width: 100%;
+            padding: 20px;
+        }
+
+        .selection {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+            padding: 10px;
+
+            width: 100%;
+            max-width: 150px;
+            min-height: 200px;
+
+            background-color: #2B404E;
+            border-radius: 12px;
+            border: 2px solid #1A2227;
+
+            text-decoration: none;
+            color: #ccccff;
+            font-size: 16px;
+            text-align: center;
+
+            transition: 0.3s;
+
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .selection img {
+            width: 100%;
+            max-width: 120px;
+            height: 120px;
+            object-fit: cover;
+            display: block;
+            border-radius: 10px;
+        }
+
+        .selection h3 {
+            width: 100%;
+            text-align: center;
+            overflow-wrap: anywhere;
+        }
+
+        .selection:hover {
+            background-color: #0f1a22;
+            border-color: #010b13;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Appearance when a card is selected */
+        .selection.selected {
+            background-color: #111a20;
+            border-color: #080d11;
+        }
+
+        /* Turn the character image grayscale */
+        .selection.selected img {
+            filter: grayscale(100%);
+            opacity: 0.6;
+        }
+
+        .selection.selected h3 {
+            color: #888888;
+        }
+
+        .selection,
+        .selection img,
+        .selection h3 {
+            transition: background-color 0.3s ease,
+                border-color 0.3s ease,
+                filter 0.3s ease,
+                opacity 0.3s ease,
+                color 0.3s ease;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+
+            width: 100%;
+            padding: 20px;
+            background-color: #243540;
+            border-bottom: 2px solid #1A2227;
+        }
+
+        .switch-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            color: #ccccff;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Hide the default checkbox but keep it accessible */
+        .switch-option input {
+            position: absolute;
+            opacity: 0;
+            width: 1px;
+            height: 1px;
+        }
+
+        /* The switch track */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+            flex-shrink: 0;
+
+            background-color: #59656d;
+            border-radius: 24px;
+            transition: background-color 0.3s;
+        }
+
+        /* The switch knob */
+        .switch::before {
+            content: "";
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            left: 3px;
+            top: 3px;
+
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        /* ON state */
+        .switch-option input:checked + .switch {
+            background-color: #6c83d9;
+        }
+
+        .switch-option input:checked + .switch::before {
+            transform: translateX(20px);
+        }
+
+        /* Keyboard accessibility */
+        .switch-option input:focus-visible + .switch {
+            outline: 2px solid white;
+            outline-offset: 3px;
+        }
+
+        /* Reset button */
+        #resetButton {
+            padding: 9px 20px;
+            border: 1px solid #801818;
+            border-radius: 8px;
+
+            background-color: #A52A2A;
+            color: #33070D;
+            font-size: 14px;
+            font-weight: bold;
+
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #resetButton:hover {
+            background-color: #801818;
+            border: 1px solid #5a1013;
+        }
+
+        /* Remove selected cards from the grid display */
+        .selection-container.hide-selected .selection.selected {
+            display: none;
+        }
+
+        .selection[hidden] {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="controls">
+
+        <label class="switch-option">
+            <span>4-Star Characters</span>
+            <input type="checkbox" id="fourStar" checked>
+            <span class="switch"></span>
+        </label>
+
+        <label class="switch-option">
+            <span>5-Star Characters</span>
+            <input type="checkbox" id="fiveStar" checked>
+            <span class="switch"></span>
+        </label>
+
+        <label class="switch-option">
+            <span>NPCs</span>
+            <input type="checkbox" id="showNPC" checked>
+            <span class="switch"></span>
+        </label>
+
+        <label class="switch-option">
+            <span>Hide selected</span>
+            <input type="checkbox" id="hideSelected">
+            <span class="switch"></span>
+        </label>
+
+        <label class="switch-option">
+            <span>Show character gender</span>
+            <input type="checkbox" id="showGender">
+            <span class="switch"></span>
+        </label>
+
+        <button id="resetButton" type="button">Reset</button>
+
+    </div>
+
+    <div class="selection-container">
+
+        <div class="selection" data-rarity="4" data-gender="m">
+
+            <img src="../img/aalto.png" alt="Image">
+
+            <h3>Aalto</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/aemeath.png" alt="Image">
+
+            <h3>Aemeath</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/augusta.png" alt="Image">
+
+            <h3>Augusta</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="npc" data-gender="m">
+
+            <img src="../img/avidius.png" alt="Image">
+
+            <h3>Avidius</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="f">
+
+            <img src="../img/baizhi.png" alt="Image">
+
+            <h3>Baizhi</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="m">
+
+            <img src="../img/brant.png" alt="Image">
+
+            <h3>Brant</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="f">
+
+            <img src="../img/buling.png" alt="Image">
+
+            <h3>Buling</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="m">
+
+            <img src="../img/calc.png" alt="Image">
+
+            <h3>Calcharo</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/camellya.png" alt="Image">
+
+            <h3>Camellya</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/cantarella.png" alt="Image">
+
+            <h3>Cantarella</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/carlotta.png" alt="Image">
+
+            <h3>Carlotta</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/cart.png" alt="Image">
+
+            <h3>Cartethyia</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/changli.png" alt="Image">
+
+            <h3>Changli</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/chisa.png" alt="Image">
+
+            <h3>Chisa</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="f">
+
+            <img src="../img/chixia.png" alt="Image">
+
+            <h3>Chixia</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/ciaccona.png" alt="Image">
+
+            <h3>Ciaccona</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="npc" data-gender="m">
+
+            <img src="../img/cristo.png" alt="Image">
+
+            <h3>Cristoforo</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="f">
+
+            <img src="../img/danjin.png" alt="Image">
+
+            <h3>Danjin</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/denia.png" alt="Image">
+
+            <h3>Denia</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="npc" data-gender="f">
+
+            <img src="../img/dhalifa.png" alt="Image">
+
+            <h3>Dhalifa</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/encore.png" alt="Image">
+
+            <h3>Encore</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="npc" data-gender="m">
+
+            <img src="../img/fenrico.png" alt="Image">
+
+            <h3>Fenrico</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="npc" data-gender="f">
+
+            <img src="../img/fleur.png" alt="Image">
+
+            <h3>Fleurdelys</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/galbrena.png" alt="Image">
+
+            <h3>Galbrena</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="npc" data-gender="m">
+
+            <img src="../img/geshu.png" alt="Image">
+
+            <h3>Geshu Lin</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="npc" data-gender="f">
+
+            <img src="../img/gyokuro.png" alt="Image">
+
+            <h3>Gyokuro</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/hiyuki.png" alt="Image">
+
+            <h3>Hiyuki</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/hsin.png" alt="Image">
+
+            <h3>Hsin</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="npc" data-gender="f">
+
+            <img src="../img/iris.png" alt="Image">
+
+            <h3>I.R.I.S.</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/iuno.png" alt="Image">
+
+            <h3>Iuno</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/jianxin.png" alt="Image">
+
+            <h3>Jianxin</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="m">
+
+            <img src="../img/jingran.png" alt="Image">
+
+            <h3>Jingran</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/jinhsi.png" alt="Image">
+
+            <h3>Jinhsi</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="m">
+
+            <img src="../img/jiyan.png" alt="Image">
+
+            <h3>Jiyan</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="m">
+
+            <img src="../img/lingyang.png" alt="Image">
+
+            <h3>Lingyang</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/lucilla.png" alt="Image">
+
+            <h3>Lucilla</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/lucy.png" alt="Image">
+
+            <h3>Lucy</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="f">
+
+            <img src="../img/lumi.png" alt="Image">
+
+            <h3>Lumi</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/lupa.png" alt="Image">
+
+            <h3>Lupa</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="m">
+
+            <img src="../img/luuk.png" alt="Image">
+
+            <h3>Luuk Herssen</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/lynae.png" alt="Image">
+
+            <h3>Lynae</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/mornye.png" alt="Image">
+
+            <h3>Mornye</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="m">
+
+            <img src="../img/mortefi.png" alt="Image">
+
+            <h3>Mortefi</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="npc" data-gender="f">
+
+            <img src="../img/mya.png" alt="Image">
+
+            <h3>Mya</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="npc" data-gender="m">
+
+            <img src="../img/nestor.png" alt="Image">
+
+            <h3>Nestor</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="npc" data-gender="f">
+
+            <img src="../img/nivora.png" alt="Image">
+
+            <h3>Nivora</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/phoebe.png" alt="Image">
+
+            <h3>Phoebe</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/phrolova.png" alt="Image">
+
+            <h3>Phrolova</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/qingxiao.png" alt="Image">
+
+            <h3>Qingxiao</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="m">
+
+            <img src="../img/qiuyuan.png" alt="Image">
+
+            <h3>Qiuyuan</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/becca.png" alt="Image">
+
+            <h3>Rebecca</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/roccia.png" alt="Image">
+
+            <h3>Roccia</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="m">
+
+            <img src="../img/roverm.png" alt="Image">
+
+            <h3>Rover</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/roverf.png" alt="Image">
+
+            <h3>Rover</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="f">
+
+            <img src="../img/sanhua.png" alt="Image">
+
+            <h3>Sanhua</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="npc" data-gender="m">
+
+            <img src="../img/scar.png" alt="Image">
+
+            <h3>Scar</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/sk.png" alt="Image">
+
+            <h3>Shorekeeper</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/sigrika.png" alt="Image">
+
+            <h3>Sigrika</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/sui.png" alt="Image">
+
+            <h3>Suisui</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/suoming.png" alt="Image">
+
+            <h3>Suoming</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="f">
+
+            <img src="../img/taoqi.png" alt="Image">
+
+            <h3>Taoqi</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="npc" data-gender="m">
+
+            <img src="../img/shaper.png" alt="Image">
+
+            <h3>The Shaper</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="npc" data-gender="f">
+
+            <img src="../img/triss.png" alt="Image">
+
+            <h3>Triss</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/verina.png" alt="Image">
+
+            <h3>Verina</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="m">
+
+            <img src="../img/xy.png" alt="Image">
+
+            <h3>Xiangli Yao</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="f">
+
+            <img src="../img/yang.png" alt="Image">
+
+            <h3>Yangyang</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/yangx.png" alt="Image">
+
+            <h3>Yangyang: Xuanling</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/yinlin.png" alt="Image">
+
+            <h3>Yinlin</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="f">
+
+            <img src="../img/youhu.png" alt="Image">
+
+            <h3>Youhu</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="m">
+
+            <img src="../img/yw.png" alt="Image">
+
+            <h3>Yuanwu</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/zani.png" alt="Image">
+
+            <h3>Zani</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f">
+
+            <img src="../img/zhezhi.png" alt="Image">
+
+            <h3>Zhezhi</h3>
+
+        </div>
+
+    </div>
+
+    
+    <script>
+        const selections = document.querySelectorAll(".selection");
+        const container = document.querySelector(".selection-container");
+
+        const fourStar = document.getElementById("fourStar");
+        const fiveStar = document.getElementById("fiveStar");
+        const NPC = document.getElementById("showNPC");
+        const hideSelected = document.getElementById("hideSelected");
+        const showGender = document.getElementById("showGender");
+        const resetButton = document.getElementById("resetButton");
+
+        // Filter characters by category
+        function filterCharacters() {
+            selections.forEach(selection => {
+                const rarity = selection.dataset.rarity;
+
+                let showCharacter = false;
+
+                if (rarity === "4" && fourStar.checked) {
+                    showCharacter = true;
+                }
+
+                if (rarity === "5" && fiveStar.checked) {
+                    showCharacter = true;
+                }
+
+                if (rarity === "npc" && NPC.checked) {
+                    showCharacter = true;
+                }
+
+                selection.hidden = !showCharacter;
+            });
+        }
+
+        function updateGenderEmojis() {
+            selections.forEach(selection => {
+                const heading = selection.querySelector("h3");
+                const gender = selection.dataset.gender;
+
+                // Save the original name once
+                if (!heading.dataset.originalName) {
+                    heading.dataset.originalName = heading.textContent;
+                }
+
+                if (showGender.checked) {
+                    let emoji = "";
+
+                    if (gender === "f") emoji = " ♀️";
+                    if (gender === "m") emoji = " ♂️";
+
+                    heading.textContent = heading.dataset.originalName + emoji;
+                } else {
+                    heading.textContent = heading.dataset.originalName;
+                }
+            });
+        }
+
+        showGender.addEventListener("change", updateGenderEmojis);
+
+        // Listen for changes to the rarity switches
+        fourStar.addEventListener("change", filterCharacters);
+        fiveStar.addEventListener("change", filterCharacters);
+        NPC.addEventListener("change", filterCharacters);
+
+        // Hide selected characters
+        hideSelected.addEventListener("change", () => {
+            container.classList.toggle(
+                "hide-selected",
+                hideSelected.checked
+            );
+        });
+
+        // Toggle character elimination
+        selections.forEach(selection => {
+            selection.addEventListener("click", () => {
+                selection.classList.toggle("selected");
+            });
+        });
+
+        
+        resetButton.addEventListener("click", () => {
+
+            // Clear all eliminated characters
+            selections.forEach(selection => {
+                selection.classList.remove("selected");
+            });
+
+            // Reapply the existing character filters
+            filterCharacters();
+
+        });
+
+
+        // Initial state
+        filterCharacters();
+        updateGenderEmojis();
+    </script>
+
+</body>
+</html>
