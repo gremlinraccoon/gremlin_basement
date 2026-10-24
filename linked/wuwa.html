@@ -203,6 +203,96 @@
         .selection[hidden] {
             display: none !important;
         }
+
+        /* Info button */
+        #infoButton {
+            padding: 1px 8px 3px 8px;
+            border: 1px solid #26619c;
+            border-radius: 20px;
+            background-color: #4682B4;
+            color: #003153;
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #infoButton:hover {
+            background-color: #26619c;
+            border: 1px solid #184878;
+        }
+
+        /* Floating popup */
+        .info-popup {
+            position: fixed;
+            z-index: 1000;
+
+            top: 90px;
+            right: 20px;
+
+            width: min(300px, calc(100vw - 40px));
+            max-height: calc(100vh - 110px);
+            overflow-y: auto;
+
+            padding: 20px;
+            background-color: #243540;
+            color: #ccccff;
+
+            border: 1px solid #526779;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45);
+
+            animation: popupAppear 0.22s ease-out;
+        }
+
+        @keyframes popupAppear {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .info-popup[hidden] {
+            display: none;
+        }
+
+        .info-popup h3 {
+            margin-bottom: 14px;
+        }
+
+        .info-popup h4 {
+            margin: 12px 0 6px;
+        }
+
+        .info-popup p {
+            margin: 6px 0;
+            font-size: 14px;
+        }
+
+        .info-popup hr {
+            margin: 14px 0;
+            border: none;
+            border-top: 1px solid #526779;
+        }
+
+        #closeInfo {
+            margin-top: 16px;
+            padding: 8px 14px;
+            border: none;
+            border-radius: 6px;
+            background-color: #526779;
+            color: white;
+            cursor: pointer;
+        }
+
+        #closeInfo:hover {
+            background-color: #657f93;
+        }
     </style>
 </head>
 <body>
@@ -228,24 +318,56 @@
         </label>
 
         <label class="switch-option">
-            <span>Hide selected</span>
-            <input type="checkbox" id="hideSelected">
-            <span class="switch"></span>
-        </label>
-
-        <label class="switch-option">
             <span>Show character gender</span>
             <input type="checkbox" id="showGender">
             <span class="switch"></span>
         </label>
 
+        <label class="switch-option">
+            <span>Show character type</span>
+            <input type="checkbox" id="showType">
+            <span class="switch"></span>
+        </label>
+
+        <label class="switch-option">
+            <span>Hide selected</span>
+            <input type="checkbox" id="hideSelected">
+            <span class="switch"></span>
+        </label>
+
         <button id="resetButton" type="button">Reset</button>
 
+        <button id="infoButton" type="button" aria-label="Show type abbreviations"
+                aria-expanded="false" aria-controls="infoPopup">🛈</button>
+
+    </div>
+
+    <div id="infoPopup" class="info-popup" hidden>
+        <h3>Type Abbreviations</h3>
+
+        <h4>Elements</h4>
+        <p><strong>AER</strong> — Aero</p>
+        <p><strong>FUS</strong> — Fusion</p>
+        <p><strong>ELE</strong> — Electro</p>
+        <p><strong>GLA</strong> — Glacio</p>
+        <p><strong>SPE</strong> — Spectro</p>
+        <p><strong>HAV</strong> — Havoc</p>
+
+        <hr>
+
+        <h4>Weapons</h4>
+        <p><strong>BRO</strong> — Broadblade</p>
+        <p><strong>SWO</strong> — Sword</p>
+        <p><strong>GAU</strong> — Gauntlets</p>
+        <p><strong>GUN</strong> — Pistols</p>
+        <p><strong>REC</strong> — Rectifier</p>
+
+        <button id="closeInfo" type="button">Close</button>
     </div>
 
     <div class="selection-container">
 
-        <div class="selection" data-rarity="4" data-gender="m">
+        <div class="selection" data-rarity="4" data-gender="m" data-element="aero" data-weapon="gun">
 
             <img src="../img/aalto.png" alt="Image">
 
@@ -253,7 +375,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="fus" data-weapon="sword">
 
             <img src="../img/aemeath.png" alt="Image">
 
@@ -261,7 +383,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="ele" data-weapon="broad">
 
             <img src="../img/augusta.png" alt="Image">
 
@@ -269,7 +391,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="m">
+        <div class="selection" data-rarity="npc" data-gender="m" data-element="" data-weapon="">
 
             <img src="../img/avidius.png" alt="Image">
 
@@ -277,7 +399,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="gla" data-weapon="recti">
 
             <img src="../img/baizhi.png" alt="Image">
 
@@ -285,7 +407,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="fus" data-weapon="sword">
 
             <img src="../img/brant.png" alt="Image">
 
@@ -293,7 +415,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="ele" data-weapon="recti">
 
             <img src="../img/buling.png" alt="Image">
 
@@ -301,7 +423,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="ele" data-weapon="broad">
 
             <img src="../img/calc.png" alt="Image">
 
@@ -309,7 +431,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="hav" data-weapon="sword">
 
             <img src="../img/camellya.png" alt="Image">
 
@@ -317,7 +439,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="hav" data-weapon="recti">
 
             <img src="../img/cantarella.png" alt="Image">
 
@@ -325,7 +447,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="gla" data-weapon="gun">
 
             <img src="../img/carlotta.png" alt="Image">
 
@@ -333,7 +455,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="aero" data-weapon="sword">
 
             <img src="../img/cart.png" alt="Image">
 
@@ -341,7 +463,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="fus" data-weapon="sword">
 
             <img src="../img/changli.png" alt="Image">
 
@@ -349,7 +471,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="hav" data-weapon="broad">
 
             <img src="../img/chisa.png" alt="Image">
 
@@ -357,7 +479,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="fus" data-weapon="gun">
 
             <img src="../img/chixia.png" alt="Image">
 
@@ -365,7 +487,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="aero" data-weapon="gun">
 
             <img src="../img/ciaccona.png" alt="Image">
 
@@ -373,7 +495,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="m">
+        <div class="selection" data-rarity="npc" data-gender="m" data-element="" data-weapon="">
 
             <img src="../img/cristo.png" alt="Image">
 
@@ -381,7 +503,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="hav" data-weapon="sword">
 
             <img src="../img/danjin.png" alt="Image">
 
@@ -389,7 +511,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="fus" data-weapon="recti">
 
             <img src="../img/denia.png" alt="Image">
 
@@ -397,7 +519,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="f">
+        <div class="selection" data-rarity="npc" data-gender="f" data-element="" data-weapon="">
 
             <img src="../img/dhalifa.png" alt="Image">
 
@@ -405,7 +527,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="fus" data-weapon="recti">
 
             <img src="../img/encore.png" alt="Image">
 
@@ -413,7 +535,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="m">
+        <div class="selection" data-rarity="npc" data-gender="m" data-element="" data-weapon="">
 
             <img src="../img/fenrico.png" alt="Image">
 
@@ -421,7 +543,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="f">
+        <div class="selection" data-rarity="npc" data-gender="f" data-element="" data-weapon="">
 
             <img src="../img/fleur.png" alt="Image">
 
@@ -429,7 +551,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="fus" data-weapon="gun">
 
             <img src="../img/galbrena.png" alt="Image">
 
@@ -437,7 +559,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="m">
+        <div class="selection" data-rarity="npc" data-gender="m" data-element="" data-weapon="">
 
             <img src="../img/geshu.png" alt="Image">
 
@@ -445,7 +567,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="f">
+        <div class="selection" data-rarity="npc" data-gender="f" data-element="" data-weapon="">
 
             <img src="../img/gyokuro.png" alt="Image">
 
@@ -453,7 +575,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="gla" data-weapon="sword">
 
             <img src="../img/hiyuki.png" alt="Image">
 
@@ -461,7 +583,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="ele" data-weapon="recti">
 
             <img src="../img/hsin.png" alt="Image">
 
@@ -469,7 +591,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="f">
+        <div class="selection" data-rarity="npc" data-gender="f" data-element="" data-weapon="">
 
             <img src="../img/iris.png" alt="Image">
 
@@ -477,7 +599,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="aero" data-weapon="glove">
 
             <img src="../img/iuno.png" alt="Image">
 
@@ -485,7 +607,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="aero" data-weapon="glove">
 
             <img src="../img/jianxin.png" alt="Image">
 
@@ -493,7 +615,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="fus" data-weapon="broad">
 
             <img src="../img/jingran.png" alt="Image">
 
@@ -501,7 +623,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="spec" data-weapon="broad">
 
             <img src="../img/jinhsi.png" alt="Image">
 
@@ -509,7 +631,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="aero" data-weapon="broad">
 
             <img src="../img/jiyan.png" alt="Image">
 
@@ -517,7 +639,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="gla" data-weapon="glove">
 
             <img src="../img/lingyang.png" alt="Image">
 
@@ -525,7 +647,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="gla" data-weapon="recti">
 
             <img src="../img/lucilla.png" alt="Image">
 
@@ -533,7 +655,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="spec" data-weapon="gun">
 
             <img src="../img/lucy.png" alt="Image">
 
@@ -541,7 +663,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="ele" data-weapon="broad">
 
             <img src="../img/lumi.png" alt="Image">
 
@@ -549,7 +671,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="fus" data-weapon="broad">
 
             <img src="../img/lupa.png" alt="Image">
 
@@ -557,7 +679,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="spec" data-weapon="glove">
 
             <img src="../img/luuk.png" alt="Image">
 
@@ -565,7 +687,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="spec" data-weapon="gun">
 
             <img src="../img/lynae.png" alt="Image">
 
@@ -573,7 +695,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="fus" data-weapon="broad">
 
             <img src="../img/mornye.png" alt="Image">
 
@@ -581,7 +703,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="m">
+        <div class="selection" data-rarity="4" data-gender="m" data-element="fus" data-weapon="gun">
 
             <img src="../img/mortefi.png" alt="Image">
 
@@ -589,7 +711,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="f">
+        <div class="selection" data-rarity="npc" data-gender="f" data-element="" data-weapon="">
 
             <img src="../img/mya.png" alt="Image">
 
@@ -597,7 +719,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="m">
+        <div class="selection" data-rarity="npc" data-gender="m" data-element="" data-weapon="">
 
             <img src="../img/nestor.png" alt="Image">
 
@@ -605,7 +727,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="f">
+        <div class="selection" data-rarity="npc" data-gender="f" data-element="" data-weapon="">
 
             <img src="../img/nivora.png" alt="Image">
 
@@ -613,7 +735,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="spec" data-weapon="recti">
 
             <img src="../img/phoebe.png" alt="Image">
 
@@ -621,7 +743,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="hav" data-weapon="recti">
 
             <img src="../img/phrolova.png" alt="Image">
 
@@ -629,7 +751,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="aero" data-weapon="sword">
 
             <img src="../img/qingxiao.png" alt="Image">
 
@@ -637,7 +759,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="aero" data-weapon="sword">
 
             <img src="../img/qiuyuan.png" alt="Image">
 
@@ -645,7 +767,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="ele" data-weapon="gun">
 
             <img src="../img/becca.png" alt="Image">
 
@@ -653,7 +775,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="hav" data-weapon="glove">
 
             <img src="../img/roccia.png" alt="Image">
 
@@ -661,7 +783,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="n" data-weapon="sword">
 
             <img src="../img/roverm.png" alt="Image">
 
@@ -669,7 +791,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="n" data-weapon="sword">
 
             <img src="../img/roverf.png" alt="Image">
 
@@ -677,7 +799,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="gla" data-weapon="sword">
 
             <img src="../img/sanhua.png" alt="Image">
 
@@ -685,7 +807,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="m">
+        <div class="selection" data-rarity="npc" data-gender="m" data-element="" data-weapon="">
 
             <img src="../img/scar.png" alt="Image">
 
@@ -693,7 +815,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="spec" data-weapon="recti">
 
             <img src="../img/sk.png" alt="Image">
 
@@ -701,7 +823,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="aero" data-weapon="glove">
 
             <img src="../img/sigrika.png" alt="Image">
 
@@ -709,7 +831,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="gla" data-weapon="recti">
 
             <img src="../img/sui.png" alt="Image">
 
@@ -717,7 +839,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="ele" data-weapon="sword">
 
             <img src="../img/suoming.png" alt="Image">
 
@@ -725,7 +847,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="hav" data-weapon="broad">
 
             <img src="../img/taoqi.png" alt="Image">
 
@@ -733,7 +855,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="m">
+        <div class="selection" data-rarity="npc" data-gender="m" data-element="" data-weapon="">
 
             <img src="../img/shaper.png" alt="Image">
 
@@ -741,7 +863,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="f">
+        <div class="selection" data-rarity="npc" data-gender="f" data-element="" data-weapon="">
 
             <img src="../img/triss.png" alt="Image">
 
@@ -749,7 +871,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="spec" data-weapon="recti">
 
             <img src="../img/verina.png" alt="Image">
 
@@ -757,7 +879,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="ele" data-weapon="glove">
 
             <img src="../img/xy.png" alt="Image">
 
@@ -765,7 +887,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="aero" data-weapon="sword">
 
             <img src="../img/yang.png" alt="Image">
 
@@ -773,7 +895,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="hav" data-weapon="sword">
 
             <img src="../img/yangx.png" alt="Image">
 
@@ -781,7 +903,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="ele" data-weapon="recti">
 
             <img src="../img/yinlin.png" alt="Image">
 
@@ -789,7 +911,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="gla" data-weapon="glove">
 
             <img src="../img/youhu.png" alt="Image">
 
@@ -797,7 +919,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="m">
+        <div class="selection" data-rarity="4" data-gender="m" data-element="ele" data-weapon="glove">
 
             <img src="../img/yw.png" alt="Image">
 
@@ -805,7 +927,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="spec" data-weapon="glove">
 
             <img src="../img/zani.png" alt="Image">
 
@@ -813,7 +935,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="gla" data-weapon="glove">
 
             <img src="../img/zhezhi.png" alt="Image">
 
@@ -833,7 +955,11 @@
         const NPC = document.getElementById("showNPC");
         const hideSelected = document.getElementById("hideSelected");
         const showGender = document.getElementById("showGender");
+        const showType = document.getElementById("showType");
         const resetButton = document.getElementById("resetButton");
+        const infoButton = document.getElementById("infoButton");
+        const infoPopup = document.getElementById("infoPopup");
+        const closeInfo = document.getElementById("closeInfo");
 
         // Filter characters by category
         function filterCharacters() {
@@ -881,7 +1007,125 @@
             });
         }
 
-        showGender.addEventListener("change", updateGenderEmojis);
+        function updateType() {
+            selections.forEach(selection => {
+                const heading = selection.querySelector("h3");
+                const el = selection.dataset.element;
+                const we = selection.dataset.weapon;
+
+                // Save the original name once
+                if (!heading.dataset.originalName) {
+                    heading.dataset.originalName = heading.textContent;
+                }
+
+                if (showType.checked) {
+                    let type = "";
+
+                    if (el === "aero" && we === "broad") type = " AER,BRO";
+                    if (el === "aero" && we === "sword") type = " AER,SWO";
+                    if (el === "aero" && we === "glove") type = " AER,GAU";
+                    if (el === "aero" && we === "gun") type = " AER,GUN";
+                    if (el === "aero" && we === "recti") type = " AER,REC";
+
+                    if (el === "fus" && we === "broad") type = " FUS,BRO";
+                    if (el === "fus" && we === "sword") type = " FUS,SWO";
+                    if (el === "fus" && we === "glove") type = " FUS,GAU";
+                    if (el === "fus" && we === "gun") type = " FUS,GUN";
+                    if (el === "fus" && we === "recti") type = " FUS,REC";
+
+                    if (el === "ele" && we === "broad") type = " ELE,BRO";
+                    if (el === "ele" && we === "sword") type = " ELE,SWO";
+                    if (el === "ele" && we === "glove") type = " ELE,GAU";
+                    if (el === "ele" && we === "gun") type = " ELE,GUN";
+                    if (el === "ele" && we === "recti") type = " ELE,REC";
+
+                    if (el === "gla" && we === "broad") type = " GLA,BRO";
+                    if (el === "gla" && we === "sword") type = " GLA,SWO";
+                    if (el === "gla" && we === "glove") type = " GLA,GAU";
+                    if (el === "gla" && we === "gun") type = " GLA,GUN";
+                    if (el === "gla" && we === "recti") type = " GLA,REC";
+
+                    if (el === "spec" && we === "broad") type = " SPE,BRO";
+                    if (el === "spec" && we === "sword") type = " SPE,SWO";
+                    if (el === "spec" && we === "glove") type = " SPE,GAU";
+                    if (el === "spec" && we === "gun") type = " SPE,GUN";
+                    if (el === "spec" && we === "recti") type = " SPE,REC";
+
+                    if (el === "hav" && we === "broad") type = " HAV,BRO";
+                    if (el === "hav" && we === "sword") type = " HAV,SWO";
+                    if (el === "hav" && we === "glove") type = " HAV,GAU";
+                    if (el === "hav" && we === "gun") type = " HAV,GUN";
+                    if (el === "hav" && we === "recti") type = " HAV,REC";
+
+                    if (el === "n" && we === "sword") type = " ALL,SWO";
+
+                    heading.textContent = heading.dataset.originalName + type;
+                } else {
+                    heading.textContent = heading.dataset.originalName;
+                }
+            });
+        }
+
+        // Open and close the info popup
+        infoButton.addEventListener("click", (event) => {
+            event.stopPropagation();
+
+            const isOpening = infoPopup.hidden;
+
+            infoPopup.hidden = !isOpening;
+            infoButton.setAttribute("aria-expanded", String(isOpening));
+        });
+
+        // Close using the Close button
+        closeInfo.addEventListener("click", () => {
+            infoPopup.hidden = true;
+            infoButton.setAttribute("aria-expanded", "false");
+        });
+
+        // Close when clicking outside the popup
+        document.addEventListener("click", (event) => {
+            if (
+                !infoPopup.hidden &&
+                !infoPopup.contains(event.target) &&
+                !infoButton.contains(event.target)
+            ) {
+                infoPopup.hidden = true;
+                infoButton.setAttribute("aria-expanded", "false");
+            }
+        });
+
+        // Close when scrolling
+        window.addEventListener("scroll", () => {
+            infoPopup.hidden = true;
+            infoButton.setAttribute("aria-expanded", "false");
+        }, { passive: true });
+
+        // Close with Escape
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape" && !infoPopup.hidden) {
+                infoPopup.hidden = true;
+                infoButton.setAttribute("aria-expanded", "false");
+                infoButton.focus();
+            }
+        });
+
+        showGender.addEventListener("change", () => {
+            if (showGender.checked) {
+                showType.checked = false;
+                updateType();
+            }
+
+            updateGenderEmojis();
+        });
+
+        showType.addEventListener("change", () => {
+            if (showType.checked) {
+                showGender.checked = false;
+                updateGenderEmojis();
+            }
+
+            updateType();
+        });
 
         // Listen for changes to the rarity switches
         fourStar.addEventListener("change", filterCharacters);
@@ -920,6 +1164,7 @@
         // Initial state
         filterCharacters();
         updateGenderEmojis();
+        updateType();
     </script>
 
 </body>
