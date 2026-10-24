@@ -203,6 +203,96 @@
         .selection[hidden] {
             display: none !important;
         }
+
+        /* Info button */
+        #infoButton {
+            padding: 1px 8px 3px 8px;
+            border: 1px solid #26619c;
+            border-radius: 20px;
+            background-color: #4682B4;
+            color: #003153;
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #infoButton:hover {
+            background-color: #26619c;
+            border: 1px solid #184878;
+        }
+
+        /* Floating popup */
+        .info-popup {
+            position: fixed;
+            z-index: 1000;
+
+            top: 90px;
+            right: 20px;
+
+            width: min(300px, calc(100vw - 40px));
+            max-height: calc(100vh - 110px);
+            overflow-y: auto;
+
+            padding: 20px;
+            background-color: #243540;
+            color: #ccccff;
+
+            border: 1px solid #526779;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45);
+
+            animation: popupAppear 0.22s ease-out;
+        }
+
+        @keyframes popupAppear {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .info-popup[hidden] {
+            display: none;
+        }
+
+        .info-popup h3 {
+            margin-bottom: 14px;
+        }
+
+        .info-popup h4 {
+            margin: 12px 0 6px;
+        }
+
+        .info-popup p {
+            margin: 6px 0;
+            font-size: 14px;
+        }
+
+        .info-popup hr {
+            margin: 14px 0;
+            border: none;
+            border-top: 1px solid #526779;
+        }
+
+        #closeInfo {
+            margin-top: 16px;
+            padding: 8px 14px;
+            border: none;
+            border-radius: 6px;
+            background-color: #526779;
+            color: white;
+            cursor: pointer;
+        }
+
+        #closeInfo:hover {
+            background-color: #657f93;
+        }
     </style>
 </head>
 <body>
@@ -228,24 +318,57 @@
         </label>
 
         <label class="switch-option">
-            <span>Hide selected</span>
-            <input type="checkbox" id="hideSelected">
-            <span class="switch"></span>
-        </label>
-
-        <label class="switch-option">
             <span>Show character gender</span>
             <input type="checkbox" id="showGender">
             <span class="switch"></span>
         </label>
 
+        <label class="switch-option">
+            <span>Show character type</span>
+            <input type="checkbox" id="showType">
+            <span class="switch"></span>
+        </label>
+
+        <label class="switch-option">
+            <span>Hide selected</span>
+            <input type="checkbox" id="hideSelected">
+            <span class="switch"></span>
+        </label>
+
         <button id="resetButton" type="button">Reset</button>
 
+        <button id="infoButton" type="button" aria-label="Show type abbreviations"
+                aria-expanded="false" aria-controls="infoPopup">🛈</button>
+
+    </div>
+
+    <div id="infoPopup" class="info-popup" hidden>
+        <h3>Type Abbreviations</h3>
+
+        <h4>Elements</h4>
+        <p><strong>ANE</strong> — Anemo</p>
+        <p><strong>GEO</strong> — Geo</p>
+        <p><strong>ELE</strong> — Electro</p>
+        <p><strong>DEN</strong> — Dendro</p>
+        <p><strong>HYD</strong> — Hydro</p>
+        <p><strong>PYR</strong> — Pyro</p>
+        <p><strong>CRY</strong> — Cryo</p>
+
+        <hr>
+
+        <h4>Weapons</h4>
+        <p><strong>CLA</strong> — Claymore</p>
+        <p><strong>SWO</strong> — Sword</p>
+        <p><strong>POL</strong> — Polearm</p>
+        <p><strong>BOW</strong> — Bow</p>
+        <p><strong>CAT</strong> — Catalyst</p>
+
+        <button id="closeInfo" type="button">Close</button>
     </div>
 
     <div class="selection-container">
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="n" data-weapon="sword">
         
             <img src="../img/aether.png" alt="Image">
 
@@ -253,7 +376,7 @@
 
         </div>
         
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="hyd" data-weapon="clay">
 
             <img src="../img/aino.png" alt="Image">
 
@@ -261,7 +384,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="geo" data-weapon="sword">
             
             <img src="../img/albedo.png" alt="Image">
 
@@ -269,7 +392,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="den" data-weapon="sword">
             
             <img src="../img/alhai.png" alt="Image">
 
@@ -277,7 +400,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="f">
+        <div class="selection" data-rarity="npc" data-gender="f" data-element="" data-weapon="">
         
             <img src="../img/alice.png" alt="Image">
 
@@ -285,7 +408,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="cryo" data-weapon="bow">
             
             <img src="../img/aloy.png" alt="Image">
 
@@ -293,7 +416,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="m">
+        <div class="selection" data-rarity="4" data-gender="m" data-element="ele" data-weapon="pole">
             
             <img src="../img/alyosha.png" alt="Image">
 
@@ -301,7 +424,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="pyro" data-weapon="bow">
             
             <img src="../img/amber.png" alt="Image">
 
@@ -309,7 +432,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="f">
+        <div class="selection" data-rarity="npc" data-gender="f" data-element="" data-weapon="">
         
             <img src="../img/mary.png" alt="Image">
 
@@ -317,7 +440,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="geo" data-weapon="clay">
             
             <img src="../img/itto.png" alt="Image">
 
@@ -325,7 +448,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="pyro" data-weapon="pole">
             
             <img src="../img/arle.png" alt="Image">
 
@@ -333,7 +456,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="f">
+        <div class="selection" data-rarity="npc" data-gender="f" data-element="" data-weapon="">
         
             <img src="../img/asmoday.png" alt="Image">
 
@@ -341,7 +464,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="den" data-weapon="cata">
             
             <img src="../img/baizhu.png" alt="Image">
 
@@ -349,7 +472,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="hyd" data-weapon="cata">
             
             <img src="../img/barb.png" alt="Image">
 
@@ -357,7 +480,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="f">
+        <div class="selection" data-rarity="npc" data-gender="f" data-element="" data-weapon="">
         
             <img src="../img/hag.png" alt="Image">
 
@@ -365,7 +488,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="ele" data-weapon="clay">
             
             <img src="../img/beidou.png" alt="Image">
 
@@ -373,7 +496,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="m">
+        <div class="selection" data-rarity="4" data-gender="m" data-element="pyro" data-weapon="sword">
             
             <img src="../img/benn.png" alt="Image">
 
@@ -381,7 +504,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="f">
+        <div class="selection" data-rarity="npc" data-gender="f" data-element="" data-weapon="">
         
             <img src="../img/bon.png" alt="Image">
 
@@ -389,7 +512,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="m">
+        <div class="selection" data-rarity="npc" data-gender="m" data-element="" data-weapon="">
         
             <img src="../img/bos.png" alt="Image">
 
@@ -397,7 +520,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="hyd" data-weapon="pole">
             
             <img src="../img/candace.png" alt="Image">
 
@@ -405,7 +528,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="m">
+        <div class="selection" data-rarity="npc" data-gender="m" data-element="" data-weapon="">
         
             <img src="../img/caribert.png" alt="Image">
 
@@ -413,7 +536,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="cryo" data-weapon="cata">
             
             <img src="../img/char.png" alt="Image">
 
@@ -421,7 +544,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="anemo" data-weapon="bow">
         
             <img src="../img/chasca.png" alt="Image">
 
@@ -429,7 +552,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="pyro" data-weapon="pole">
         
             <img src="../img/chev.png" alt="Image">
 
@@ -437,7 +560,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="geo" data-weapon="sword">
         
             <img src="../img/chiori.png" alt="Image">
 
@@ -445,7 +568,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="m">
+        <div class="selection" data-rarity="npc" data-gender="m" data-element="" data-weapon="">
         
             <img src="../img/cloth.png" alt="Image">
 
@@ -453,7 +576,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="m">
+        <div class="selection" data-rarity="4" data-gender="m" data-element="cryo" data-weapon="clay">
         
             <img src="../img/chongyun.png" alt="Image">
 
@@ -461,7 +584,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="cryo" data-weapon="cata">
         
             <img src="../img/citlali.png" alt="Image">
 
@@ -469,7 +592,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="ele" data-weapon="sword">
         
             <img src="../img/clorinde.png" alt="Image">
 
@@ -477,7 +600,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="den" data-weapon="bow">
         
             <img src="../img/collei.png" alt="Image">
 
@@ -485,7 +608,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="hyd" data-weapon="cata">
         
             <img src="../img/bina.png" alt="Image">
 
@@ -493,7 +616,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="ele" data-weapon="pole">
         
             <img src="../img/cyno.png" alt="Image">
 
@@ -501,7 +624,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="m">
+        <div class="selection" data-rarity="4" data-gender="m" data-element="hyd" data-weapon="sword">
         
             <img src="../img/dahliam.png" alt="Image">
 
@@ -509,7 +632,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="m">
+        <div class="selection" data-rarity="npc" data-gender="m" data-element="" data-weapon="">
         
             <img src="../img/dain.png" alt="Image">
 
@@ -517,7 +640,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="pyro" data-weapon="clay">
         
             <img src="../img/dehya.png" alt="Image">
 
@@ -525,7 +648,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="pyro" data-weapon="clay">
         
             <img src="../img/diluc.png" alt="Image">
 
@@ -533,7 +656,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="cryo" data-weapon="bow">
         
             <img src="../img/diona.png" alt="Image">
 
@@ -541,7 +664,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="ele" data-weapon="clay">
         
             <img src="../img/dori.png" alt="Image">
 
@@ -549,7 +672,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="f">
+        <div class="selection" data-rarity="npc" data-gender="f" data-element="" data-weapon="">
         
             <img src="../img/dun.png" alt="Image">
 
@@ -557,7 +680,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="pyro" data-weapon="sword">
         
             <img src="../img/durin.png" alt="Image">
 
@@ -565,7 +688,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="den" data-weapon="pole">
         
             <img src="../img/emilie.png" alt="Image">
 
@@ -573,7 +696,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="cryo" data-weapon="pole">
         
             <img src="../img/escoffier.png" alt="Image">
 
@@ -581,7 +704,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="cryo" data-weapon="clay">
         
             <img src="../img/eula.png" alt="Image">
 
@@ -589,7 +712,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="anemo" data-weapon="bow">
         
             <img src="../img/faru.png" alt="Image">
 
@@ -597,7 +720,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="ele" data-weapon="bow">
         
             <img src="../img/fisch.png" alt="Image">
 
@@ -605,7 +728,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="ele" data-weapon="pole">
         
             <img src="../img/flins.png" alt="Image">
 
@@ -613,7 +736,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="m">
+        <div class="selection" data-rarity="4" data-gender="m" data-element="cryo" data-weapon="clay">
         
             <img src="../img/fremi.png" alt="Image">
 
@@ -621,7 +744,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="hyd" data-weapon="sword">
         
             <img src="../img/furina.png" alt="Image">
 
@@ -629,7 +752,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="m">
+        <div class="selection" data-rarity="4" data-gender="m" data-element="pyro" data-weapon="clay">
         
             <img src="../img/gaming.png" alt="Image">
 
@@ -637,7 +760,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="cryo" data-weapon="bow">
         
             <img src="../img/ganyu.png" alt="Image">
 
@@ -645,7 +768,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="m">
+        <div class="selection" data-rarity="4" data-gender="m" data-element="geo" data-weapon="bow">
         
             <img src="../img/gorou.png" alt="Image">
 
@@ -653,7 +776,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="m">
+        <div class="selection" data-rarity="npc" data-gender="m" data-element="" data-weapon="">
         
             <img src="../img/hrop.png" alt="Image">
 
@@ -661,7 +784,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="pyro" data-weapon="pole">
         
             <img src="../img/hutao.png" alt="Image">
 
@@ -669,7 +792,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="ele" data-weapon="pole">
         
             <img src="../img/iansan.png" alt="Image">
 
@@ -677,7 +800,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="m">
+        <div class="selection" data-rarity="4" data-gender="m" data-element="anemo" data-weapon="cata">
         
             <img src="../img/ifa.png" alt="Image">
 
@@ -685,7 +808,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="m">
+        <div class="selection" data-rarity="4" data-gender="m" data-element="geo" data-weapon="pole">
         
             <img src="../img/illuga.png" alt="Image">
 
@@ -693,7 +816,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="f">
+        <div class="selection" data-rarity="npc" data-gender="f" data-element="" data-weapon="">
         
             <img src="../img/ind.png" alt="Image">
 
@@ -701,7 +824,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="ele" data-weapon="pole">
         
             <img src="../img/ineffa.png" alt="Image">
 
@@ -709,7 +832,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="f">
+        <div class="selection" data-rarity="npc" data-gender="f" data-element="" data-weapon="">
         
             <img src="../img/istaroth.png" alt="Image">
 
@@ -717,7 +840,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="anemo" data-weapon="bow">
         
             <img src="../img/jahoda.png" alt="Image">
 
@@ -725,7 +848,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="anemo" data-weapon="sword">
         
             <img src="../img/jean.png" alt="Image">
 
@@ -733,7 +856,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="f">
+        <div class="selection" data-rarity="npc" data-gender="f" data-element="" data-weapon="">
         
             <img src="../img/jeht.png" alt="Image">
 
@@ -741,7 +864,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="geo" data-weapon="pole">
         
             <img src="../img/kachina.png" alt="Image">
 
@@ -749,7 +872,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="anemo" data-weapon="sword">
         
             <img src="../img/kazuha.png" alt="Image">
 
@@ -757,7 +880,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="m">
+        <div class="selection" data-rarity="4" data-gender="m" data-element="cryo" data-weapon="sword">
         
             <img src="../img/kaeya.png" alt="Image">
 
@@ -765,7 +888,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="cryo" data-weapon="sword">
         
             <img src="../img/ayaka.png" alt="Image">
 
@@ -773,7 +896,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="hyd" data-weapon="sword">
         
             <img src="../img/ayato.png" alt="Image">
 
@@ -781,7 +904,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="m">
+        <div class="selection" data-rarity="4" data-gender="m" data-element="den" data-weapon="clay">
         
             <img src="../img/kaveh.png" alt="Image">
 
@@ -789,7 +912,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="ele" data-weapon="sword">
         
             <img src="../img/keqing.png" alt="Image">
 
@@ -797,7 +920,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="den" data-weapon="clay">
         
             <img src="../img/kinich.png" alt="Image">
 
@@ -805,7 +928,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="den" data-weapon="sword">
         
             <img src="../img/kirara.png" alt="Image">
 
@@ -813,7 +936,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="pyro" data-weapon="cata">
         
             <img src="../img/klee.png" alt="Image">
 
@@ -821,7 +944,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="ele" data-weapon="bow">
         
             <img src="../img/sara.png" alt="Image">
 
@@ -829,7 +952,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="ele" data-weapon="sword">
         
             <img src="../img/kuki.png" alt="Image">
 
@@ -837,7 +960,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="anemo" data-weapon="cata"> 
         
             <img src="../img/lanyan.png" alt="Image">
 
@@ -845,7 +968,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="den" data-weapon="cata">
         
             <img src="../img/lauma.png" alt="Image">
 
@@ -853,7 +976,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="cryo" data-weapon="sword">
         
             <img src="../img/layla.png" alt="Image">
 
@@ -861,7 +984,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="m">
+        <div class="selection" data-rarity="npc" data-gender="m" data-element="" data-weapon="">
         
             <img src="../img/liben.png" alt="Image">
 
@@ -869,7 +992,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="geo" data-weapon="bow">
         
             <img src="../img/linnea.png" alt="Image">
 
@@ -877,7 +1000,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="ele" data-weapon="cata">
         
             <img src="../img/lisa.png" alt="Image">
 
@@ -885,7 +1008,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="cryo" data-weapon="pole">
         
             <img src="../img/lohen.png" alt="Image">
 
@@ -893,7 +1016,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="n" data-weapon="sword">
         
             <img src="../img/lumine.png" alt="Image">
 
@@ -901,7 +1024,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="anemo" data-weapon="sword">
         
             <img src="../img/lynette.png" alt="Image">
 
@@ -909,7 +1032,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="pyro" data-weapon="bow">
         
             <img src="../img/lyney.png" alt="Image">
 
@@ -917,383 +1040,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
-        
-            <img src="../img/mavuika.png" alt="Image">
-
-            <h3>Mavuika</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="npc" data-gender="m">
-        
-            <img src="../img/men.png" alt="Image">
-
-            <h3>Menogias</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="4" data-gender="m">
-        
-            <img src="../img/mika.png" alt="Image">
-
-            <h3>Mika</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="5" data-gender="f">
-        
-            <img src="../img/mona.png" alt="Image">
-
-            <h3>Mona</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="5" data-gender="f">
-        
-            <img src="../img/mualani.png" alt="Image">
-
-            <h3>Mualani</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="npc" data-gender="f">
-        
-            <img src="../img/naberius.png" alt="Image">
-
-            <h3>Naberius</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="5" data-gender="f">
-        
-            <img src="../img/nahida.png" alt="Image">
-
-            <h3>Nahida</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="5" data-gender="f">
-        
-            <img src="../img/navia.png" alt="Image">
-
-            <h3>Navia</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="5" data-gender="f">
-        
-            <img src="../img/nefer.png" alt="Image">
-
-            <h3>Nefer</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="5" data-gender="m">
-        
-            <img src="../img/neuvi.png" alt="Image">
-
-            <h3>Neuvillette</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="5" data-gender="f">
-        
-            <img src="../img/nicole.png" alt="Image">
-
-            <h3>Nicole</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="5" data-gender="f">
-        
-            <img src="../img/nilou.png" alt="Image">
-
-            <h3>Nilou</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="4" data-gender="f">
-        
-            <img src="../img/nin.png" alt="Image">
-
-            <h3>Ningguang</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="4" data-gender="f">
-        
-            <img src="../img/noelle.png" alt="Image">
-
-            <h3>Noelle</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="5" data-gender="f">
-        
-            <img src="../img/odette.png" alt="Image">
-
-            <h3>Odette</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="4" data-gender="m">
-        
-            <img src="../img/ororon.png" alt="Image">
-
-            <h3>Ororon</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="npc" data-gender="f">
-        
-            <img src="../img/paimon.png" alt="Image">
-
-            <h3>Paimon</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="4" data-gender="f">
-        
-            <img src="../img/prune.png" alt="Image">
-
-            <h3>Prune</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="5" data-gender="f">
-        
-            <img src="../img/qiqi.png" alt="Image">
-
-            <h3>Qiqi</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="npc" data-gender="f">
-        
-            <img src="../img/makoto.png" alt="Image">
-
-            <h3>Raiden Makoto</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="5" data-gender="f">
-        
-            <img src="../img/raiden.png" alt="Image">
-
-            <h3>Raiden Shogun</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="4" data-gender="m">
-        
-            <img src="../img/razor.png" alt="Image">
-
-            <h3>Razor</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="npc" data-gender="m">
-        
-            <img src="../img/rerir.png" alt="Image">
-
-            <h3>Rerir</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="npc" data-gender="f">
-        
-            <img src="../img/gold.png" alt="Image">
-
-            <h3>Rhinedottir</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="npc" data-gender="f">
-        
-            <img src="../img/ronova.png" alt="Image">
-
-            <h3>Ronova</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="4" data-gender="f">
-        
-            <img src="../img/rosa.png" alt="Image">
-
-            <h3>Rosaria</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="npc" data-gender="f">
-        
-            <img src="../img/rukk.png" alt="Image">
-
-            <h3>Rukhadevata</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="npc" data-gender="m">
-        
-            <img src="../img/ruu.png" alt="Image">
-
-            <h3>Ruu</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="5" data-gender="f">
-        
-            <img src="../img/sandrone.png" alt="Image">
-
-            <h3>Sandrone</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="5" data-gender="f">
-        
-            <img src="../img/koko.png" alt="Image">
-
-            <h3>Sangonomiya Kokomi</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="4" data-gender="f">
-        
-            <img src="../img/sayu.png" alt="Image">
-
-            <h3>Sayu</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="4" data-gender="m">
-        
-            <img src="../img/sethos.png" alt="Image">
-
-            <h3>Sethos</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="5" data-gender="f">
-        
-            <img src="../img/shenhe.png" alt="Image">
-
-            <h3>Shenhe</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="4" data-gender="m">
-        
-            <img src="../img/heizou.png" alt="Image">
-
-            <h3>Shikanoin Heizou</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="5" data-gender="f">
-        
-            <img src="../img/sige.png" alt="Image">
-
-            <h3>Sigewinne</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="5" data-gender="f">
-        
-            <img src="../img/skirk.png" alt="Image">
-
-            <h3>Skirk</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="4" data-gender="f">
-        
-            <img src="../img/sucrose.png" alt="Image">
-
-            <h3>Sucrose</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="5" data-gender="m">
-        
-            <img src="../img/childe.png" alt="Image">
-
-            <h3>Tartaglia</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="npc" data-gender="m">
-        
-            <img src="../img/teppei.png" alt="Image">
-
-            <h3>Teppei</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="4" data-gender="m">
-        
-            <img src="../img/thoma.png" alt="Image">
-
-            <h3>Thoma</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="5" data-gender="m">
-        
-            <img src="../img/tighnari.png" alt="Image">
-
-            <h3>Tighnari</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="5" data-gender="f">
-        
-            <img src="../img/varesa.png" alt="Image">
-
-            <h3>Varesa</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="5" data-gender="m">
-        
-            <img src="../img/varka.png" alt="Image">
-
-            <h3>Varka</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="5" data-gender="m">
-        
-            <img src="../img/venti.png" alt="Image">
-
-            <h3>Venti</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="5" data-gender="f">
-        
-            <img src="../img/vesna.png" alt="Image">
-
-            <h3>Vesna</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="5" data-gender="f">
-        
-            <img src="../img/vodya.png" alt="Image">
-
-            <h3>Vodyanitsa</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="5" data-gender="m">
-        
-            <img src="../img/scara.png" alt="Image">
-
-            <h3>Wanderer</h3>
-
-        </div>
-
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="n" data-weapon="sword">
         
             <img src="../img/manekin.png" alt="Image">
 
@@ -1301,7 +1048,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="n" data-weapon="sword">
         
             <img src="../img/manekina.png" alt="Image">
 
@@ -1309,7 +1056,383 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="pyro" data-weapon="clay">
+        
+            <img src="../img/mavuika.png" alt="Image">
+
+            <h3>Mavuika</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="npc" data-gender="m" data-element="" data-weapon="">
+        
+            <img src="../img/men.png" alt="Image">
+
+            <h3>Menogias</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="m" data-element="cryo" data-weapon="pole">
+        
+            <img src="../img/mika.png" alt="Image">
+
+            <h3>Mika</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f" data-element="hyd" data-weapon="cata">
+        
+            <img src="../img/mona.png" alt="Image">
+
+            <h3>Mona</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f" data-element="hyd" data-weapon="cata">
+        
+            <img src="../img/mualani.png" alt="Image">
+
+            <h3>Mualani</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="npc" data-gender="f" data-element="" data-weapon="">
+        
+            <img src="../img/naberius.png" alt="Image">
+
+            <h3>Naberius</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f" data-element="den" data-weapon="cata">
+        
+            <img src="../img/nahida.png" alt="Image">
+
+            <h3>Nahida</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f" data-element="geo" data-weapon="clay">
+        
+            <img src="../img/navia.png" alt="Image">
+
+            <h3>Navia</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f" data-element="den" data-weapon="cata">
+        
+            <img src="../img/nefer.png" alt="Image">
+
+            <h3>Nefer</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="m" data-element="hyd" data-weapon="cata">
+        
+            <img src="../img/neuvi.png" alt="Image">
+
+            <h3>Neuvillette</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f" data-element="pyro" data-weapon="cata">
+        
+            <img src="../img/nicole.png" alt="Image">
+
+            <h3>Nicole</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f" data-element="hyd" data-weapon="sword">
+        
+            <img src="../img/nilou.png" alt="Image">
+
+            <h3>Nilou</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="f" data-element="geo" data-weapon="cata">
+        
+            <img src="../img/nin.png" alt="Image">
+
+            <h3>Ningguang</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="f" data-element="geo" data-weapon="clay">
+        
+            <img src="../img/noelle.png" alt="Image">
+
+            <h3>Noelle</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f" data-element="cryo" data-weapon="sword">
+        
+            <img src="../img/odette.png" alt="Image">
+
+            <h3>Odette</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="m" data-element="ele" data-weapon="bow">
+        
+            <img src="../img/ororon.png" alt="Image">
+
+            <h3>Ororon</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="npc" data-gender="f" data-element="" data-weapon="">
+        
+            <img src="../img/paimon.png" alt="Image">
+
+            <h3>Paimon</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="f" data-element="anemo" data-weapon="cata">
+        
+            <img src="../img/prune.png" alt="Image">
+
+            <h3>Prune</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f" data-element="cryo" data-weapon="sword">
+        
+            <img src="../img/qiqi.png" alt="Image">
+
+            <h3>Qiqi</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="npc" data-gender="f" data-element="" data-weapon="">
+        
+            <img src="../img/makoto.png" alt="Image">
+
+            <h3>Raiden Makoto</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f" data-element="ele" data-weapon="pole">
+        
+            <img src="../img/raiden.png" alt="Image">
+
+            <h3>Raiden Shogun</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="m" data-element="ele" data-weapon="clay">
+        
+            <img src="../img/razor.png" alt="Image">
+
+            <h3>Razor</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="npc" data-gender="m" data-element="" data-weapon="">
+        
+            <img src="../img/rerir.png" alt="Image">
+
+            <h3>Rerir</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="npc" data-gender="f" data-element="" data-weapon="">
+        
+            <img src="../img/gold.png" alt="Image">
+
+            <h3>Rhinedottir</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="npc" data-gender="f" data-element="" data-weapon="">
+        
+            <img src="../img/ronova.png" alt="Image">
+
+            <h3>Ronova</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="f" data-element="cryo" data-weapon="pole">
+        
+            <img src="../img/rosa.png" alt="Image">
+
+            <h3>Rosaria</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="npc" data-gender="f" data-element="" data-weapon="">
+        
+            <img src="../img/rukk.png" alt="Image">
+
+            <h3>Rukhadevata</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="npc" data-gender="m" data-element="" data-weapon="">
+        
+            <img src="../img/ruu.png" alt="Image">
+
+            <h3>Ruu</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f" data-element="cryo" data-weapon="clay">
+        
+            <img src="../img/sandrone.png" alt="Image">
+
+            <h3>Sandrone</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f" data-element="hyd" data-weapon="cata">
+        
+            <img src="../img/koko.png" alt="Image">
+
+            <h3>Sangonomiya Kokomi</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="f" data-element="anemo" data-weapon="clay">
+        
+            <img src="../img/sayu.png" alt="Image">
+
+            <h3>Sayu</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="m" data-element="ele" data-weapon="bow">
+        
+            <img src="../img/sethos.png" alt="Image">
+
+            <h3>Sethos</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f" data-element="cryo" data-weapon="pole">
+        
+            <img src="../img/shenhe.png" alt="Image">
+
+            <h3>Shenhe</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="m" data-element="anemo" data-weapon="cata">
+        
+            <img src="../img/heizou.png" alt="Image">
+
+            <h3>Shikanoin Heizou</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f" data-element="hyd" data-weapon="bow">
+        
+            <img src="../img/sige.png" alt="Image">
+
+            <h3>Sigewinne</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f" data-element="cryo" data-weapon="sword">
+        
+            <img src="../img/skirk.png" alt="Image">
+
+            <h3>Skirk</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="f" data-element="anemo" data-weapon="cata">
+        
+            <img src="../img/sucrose.png" alt="Image">
+
+            <h3>Sucrose</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="m" data-element="hyd" data-weapon="bow">
+        
+            <img src="../img/childe.png" alt="Image">
+
+            <h3>Tartaglia</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="npc" data-gender="m" data-element="" data-weapon="">
+        
+            <img src="../img/teppei.png" alt="Image">
+
+            <h3>Teppei</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="4" data-gender="m" data-element="pyro" data-weapon="pole">
+        
+            <img src="../img/thoma.png" alt="Image">
+
+            <h3>Thoma</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="m" data-element="den" data-weapon="bow">
+        
+            <img src="../img/tighnari.png" alt="Image">
+
+            <h3>Tighnari</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f" data-element="ele" data-weapon="cata">
+        
+            <img src="../img/varesa.png" alt="Image">
+
+            <h3>Varesa</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="m" data-element="anemo" data-weapon="clay">
+        
+            <img src="../img/varka.png" alt="Image">
+
+            <h3>Varka</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="m" data-element="anemo" data-weapon="bow">
+        
+            <img src="../img/venti.png" alt="Image">
+
+            <h3>Venti</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f" data-element="anemo" data-weapon="sword">
+        
+            <img src="../img/vesna.png" alt="Image">
+
+            <h3>Vesna</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="f" data-element="hyd" data-weapon="cata">
+        
+            <img src="../img/vodya.png" alt="Image">
+
+            <h3>Vodyanitsa</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="m" data-element="anemo" data-weapon="cata">
+        
+            <img src="../img/scara.png" alt="Image">
+
+            <h3>Wanderer</h3>
+
+        </div>
+
+        <div class="selection" data-rarity="5" data-gender="m" data-element="cryo" data-weapon="cata">
         
             <img src="../img/wrio.png" alt="Image">
 
@@ -1317,7 +1440,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="pyro" data-weapon="pole">
         
             <img src="../img/xiangling.png" alt="Image">
 
@@ -1325,7 +1448,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="anemo" data-weapon="cata">
         
             <img src="../img/xianyun.png" alt="Image">
 
@@ -1333,7 +1456,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="anemo" data-weapon="pole">
         
             <img src="../img/xiao.png" alt="Image">
 
@@ -1341,7 +1464,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="geo" data-weapon="sword">
         
             <img src="../img/xilonen.png" alt="Image">
 
@@ -1349,7 +1472,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="m">
+        <div class="selection" data-rarity="4" data-gender="m" data-element="hyd" data-weapon="sword">
         
             <img src="../img/xingqiu.png" alt="Image">
 
@@ -1357,7 +1480,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="pyro" data-weapon="clay">
         
             <img src="../img/xinyan.png" alt="Image">
 
@@ -1365,7 +1488,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="ele" data-weapon="cata">
         
             <img src="../img/yae.png" alt="Image">
 
@@ -1373,7 +1496,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="pyro" data-weapon="cata">
         
             <img src="../img/yanfei.png" alt="Image">
 
@@ -1381,7 +1504,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="den" data-weapon="pole">
         
             <img src="../img/yaoyao.png" alt="Image">
 
@@ -1389,7 +1512,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="hyd" data-weapon="bow">
         
             <img src="../img/yelan.png" alt="Image">
 
@@ -1397,7 +1520,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="pyro" data-weapon="bow">
         
             <img src="../img/yoimiya.png" alt="Image">
 
@@ -1405,7 +1528,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="anemo" data-weapon="cata">
         
             <img src="../img/mizuki.png" alt="Image">
 
@@ -1413,7 +1536,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="geo" data-weapon="pole">
         
             <img src="../img/yunjin.png" alt="Image">
 
@@ -1421,7 +1544,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="geo" data-weapon="pole">
         
             <img src="../img/zhongli.png" alt="Image">
 
@@ -1429,7 +1552,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="geo" data-weapon="sword">
         
             <img src="../img/zibai.png" alt="Image">
 
@@ -1449,7 +1572,11 @@
         const NPC = document.getElementById("showNPC");
         const hideSelected = document.getElementById("hideSelected");
         const showGender = document.getElementById("showGender");
+        const showType = document.getElementById("showType");
         const resetButton = document.getElementById("resetButton");
+        const infoButton = document.getElementById("infoButton");
+        const infoPopup = document.getElementById("infoPopup");
+        const closeInfo = document.getElementById("closeInfo");
 
         // Filter characters by category
         function filterCharacters() {
@@ -1497,7 +1624,131 @@
             });
         }
 
-        showGender.addEventListener("change", updateGenderEmojis);
+        function updateType() {
+            selections.forEach(selection => {
+                const heading = selection.querySelector("h3");
+                const el = selection.dataset.element;
+                const we = selection.dataset.weapon;
+
+                // Save the original name once
+                if (!heading.dataset.originalName) {
+                    heading.dataset.originalName = heading.textContent;
+                }
+
+                if (showType.checked) {
+                    let type = "";
+
+                    if (el === "anemo" && we === "clay") type = " ANE,CLA";
+                    if (el === "anemo" && we === "sword") type = " ANE,SWO";
+                    if (el === "anemo" && we === "pole") type = " ANE,POL";
+                    if (el === "anemo" && we === "bow") type = " ANE,BOW";
+                    if (el === "anemo" && we === "cata") type = " ANE,CAT";
+
+                    if (el === "geo" && we === "clay") type = " GEO,CLA";
+                    if (el === "geo" && we === "sword") type = " GEO,SWO";
+                    if (el === "geo" && we === "pole") type = " GEO,POL";
+                    if (el === "geo" && we === "bow") type = " GEO,BOW";
+                    if (el === "geo" && we === "cata") type = " GEO,CAT";
+
+                    if (el === "ele" && we === "clay") type = " ELE,CLA";
+                    if (el === "ele" && we === "sword") type = " ELE,SWO";
+                    if (el === "ele" && we === "pole") type = " ELE,POL";
+                    if (el === "ele" && we === "bow") type = " ELE,BOW";
+                    if (el === "ele" && we === "cata") type = " ELE,CAT";
+
+                    if (el === "den" && we === "clay") type = " DEN,CLA";
+                    if (el === "den" && we === "sword") type = " DEN,SWO";
+                    if (el === "den" && we === "pole") type = " DEN,POL";
+                    if (el === "den" && we === "bow") type = " DEN,BOW";
+                    if (el === "den" && we === "cata") type = " DEN,CAT";
+
+                    if (el === "hyd" && we === "clay") type = " HYD,CLA";
+                    if (el === "hyd" && we === "sword") type = " HYD,SWO";
+                    if (el === "hyd" && we === "pole") type = " HYD,POL";
+                    if (el === "hyd" && we === "bow") type = " HYD,BOW";
+                    if (el === "hyd" && we === "cata") type = " HYD,CAT";
+
+                    if (el === "pyro" && we === "clay") type = " PYR,CLA";
+                    if (el === "pyro" && we === "sword") type = " PYR,SWO";
+                    if (el === "pyro" && we === "pole") type = " PYR,POL";
+                    if (el === "pyro" && we === "bow") type = " PYR,BOW";
+                    if (el === "pyro" && we === "cata") type = " PYR,CAT";
+
+                    if (el === "cryo" && we === "clay") type = " CRY,CLA";
+                    if (el === "cryo" && we === "sword") type = " CRY,SWO";
+                    if (el === "cryo" && we === "pole") type = " CRY,POL";
+                    if (el === "cryo" && we === "bow") type = " CRY,BOW";
+                    if (el === "cryo" && we === "cata") type = " CRY,CAT";
+
+                    if (el === "n" && we === "sword") type = " ALL,SWO";
+
+                    heading.textContent = heading.dataset.originalName + type;
+                } else {
+                    heading.textContent = heading.dataset.originalName;
+                }
+            });
+        }
+
+        // Open and close the info popup
+        infoButton.addEventListener("click", (event) => {
+            event.stopPropagation();
+
+            const isOpening = infoPopup.hidden;
+
+            infoPopup.hidden = !isOpening;
+            infoButton.setAttribute("aria-expanded", String(isOpening));
+        });
+
+        // Close using the Close button
+        closeInfo.addEventListener("click", () => {
+            infoPopup.hidden = true;
+            infoButton.setAttribute("aria-expanded", "false");
+        });
+
+        // Close when clicking outside the popup
+        document.addEventListener("click", (event) => {
+            if (
+                !infoPopup.hidden &&
+                !infoPopup.contains(event.target) &&
+                !infoButton.contains(event.target)
+            ) {
+                infoPopup.hidden = true;
+                infoButton.setAttribute("aria-expanded", "false");
+            }
+        });
+
+        // Close when scrolling
+        window.addEventListener("scroll", () => {
+            infoPopup.hidden = true;
+            infoButton.setAttribute("aria-expanded", "false");
+        }, { passive: true });
+
+        // Close with Escape
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape" && !infoPopup.hidden) {
+                infoPopup.hidden = true;
+                infoButton.setAttribute("aria-expanded", "false");
+                infoButton.focus();
+            }
+        });
+
+        showGender.addEventListener("change", () => {
+            if (showGender.checked) {
+                showType.checked = false;
+                updateType();
+            }
+
+            updateGenderEmojis();
+        });
+
+        showType.addEventListener("change", () => {
+            if (showType.checked) {
+                showGender.checked = false;
+                updateGenderEmojis();
+            }
+
+            updateType();
+        });
 
         // Listen for changes to the rarity switches
         fourStar.addEventListener("change", filterCharacters);
@@ -1536,6 +1787,7 @@
         // Initial state
         filterCharacters();
         updateGenderEmojis();
+        updateType();
     </script>
 
 </body>
