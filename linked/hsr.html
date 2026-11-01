@@ -203,6 +203,96 @@
         .selection[hidden] {
             display: none !important;
         }
+
+        /* Info button */
+        #infoButton {
+            padding: 1px 8px 3px 8px;
+            border: 1px solid #26619c;
+            border-radius: 20px;
+            background-color: #4682B4;
+            color: #003153;
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #infoButton:hover {
+            background-color: #26619c;
+            border: 1px solid #184878;
+        }
+
+        /* Floating popup */
+        .info-popup {
+            position: fixed;
+            z-index: 1000;
+
+            top: 90px;
+            right: 20px;
+
+            width: min(300px, calc(100vw - 40px));
+            max-height: calc(100vh - 110px);
+            overflow-y: auto;
+
+            padding: 20px;
+            background-color: #243540;
+            color: #ccccff;
+
+            border: 1px solid #526779;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45);
+
+            animation: popupAppear 0.22s ease-out;
+        }
+
+        @keyframes popupAppear {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .info-popup[hidden] {
+            display: none;
+        }
+
+        .info-popup h3 {
+            margin-bottom: 14px;
+        }
+
+        .info-popup h4 {
+            margin: 12px 0 6px;
+        }
+
+        .info-popup p {
+            margin: 6px 0;
+            font-size: 14px;
+        }
+
+        .info-popup hr {
+            margin: 14px 0;
+            border: none;
+            border-top: 1px solid #526779;
+        }
+
+        #closeInfo {
+            margin-top: 16px;
+            padding: 8px 14px;
+            border: none;
+            border-radius: 6px;
+            background-color: #526779;
+            color: white;
+            cursor: pointer;
+        }
+
+        #closeInfo:hover {
+            background-color: #657f93;
+        }
     </style>
 </head>
 <body>
@@ -210,14 +300,14 @@
     <div class="controls">
 
         <label class="switch-option">
-            <span>4-Star Characters</span>
-            <input type="checkbox" id="fourStar" checked>
-            <span class="switch"></span>
-        </label>
-
-        <label class="switch-option">
             <span>5-Star Characters</span>
             <input type="checkbox" id="fiveStar" checked>
+            <span class="switch"></span>
+        </label>
+        
+        <label class="switch-option">
+            <span>4-Star Characters</span>
+            <input type="checkbox" id="fourStar" checked>
             <span class="switch"></span>
         </label>
 
@@ -228,24 +318,61 @@
         </label>
 
         <label class="switch-option">
-            <span>Hide selected</span>
-            <input type="checkbox" id="hideSelected">
-            <span class="switch"></span>
-        </label>
-
-        <label class="switch-option">
             <span>Show character gender</span>
             <input type="checkbox" id="showGender">
             <span class="switch"></span>
         </label>
 
+        <label class="switch-option">
+            <span>Show character type</span>
+            <input type="checkbox" id="showType">
+            <span class="switch"></span>
+        </label>
+
+        <label class="switch-option">
+            <span>Hide selected</span>
+            <input type="checkbox" id="hideSelected">
+            <span class="switch"></span>
+        </label>
+
         <button id="resetButton" type="button">Reset</button>
 
+        <button id="infoButton" type="button" aria-label="Show type abbreviations"
+                aria-expanded="false" aria-controls="infoPopup">🛈</button>
+
+    </div>
+
+    <div id="infoPopup" class="info-popup" hidden>
+        <h3>Type Abbreviations</h3>
+
+        <h4>Elements</h4>
+        <p><strong>PHY</strong> — Physical</p>
+        <p><strong>FIR</strong> — Fire</p>
+        <p><strong>ICE</strong> — Ice</p>
+        <p><strong>LIG</strong> — Lightning</p>
+        <p><strong>WIN</strong> — Wind</p>
+        <p><strong>QUA</strong> — Quantum</p>
+        <p><strong>IMA</strong> — Imaginary</p>
+
+        <hr>
+
+        <h4>Paths</h4>
+        <p><strong>ABU</strong> — Abundance</p>
+        <p><strong>DES</strong> — Destruction</p>
+        <p><strong>ELA</strong> — Elation</p>
+        <p><strong>ERU</strong> — Erudition</p>
+        <p><strong>HAR</strong> — Harmony</p>
+        <p><strong>HUN</strong> — Hunt</p>
+        <p><strong>NIH</strong> — Nihility</p>
+        <p><strong>PRE</strong> — Preservation</p>
+        <p><strong>REM</strong> — Remembrance</p>
+
+        <button id="closeInfo" type="button">Close</button>
     </div>
 
     <div class="selection-container">
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="lig" data-path="nih">
 
             <img src="../img/acheron.png" alt="Image">
 
@@ -253,7 +380,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="qua" data-path="ela">
             
             <img src="../img/aha.png" alt="Image">
 
@@ -261,7 +388,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="lig" data-path="rem">
             
             <img src="../img/aglaea.png" alt="Image">
 
@@ -269,7 +396,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="win" data-path="eru">
             
             <img src="../img/anaxa.png" alt="Image">
 
@@ -277,7 +404,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="qua" data-path="hun">
             
             <img src="../img/archer.png" alt="Image">
 
@@ -285,7 +412,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="phy" data-path="eru">
             
             <img src="../img/argenti.png" alt="Image">
 
@@ -293,7 +420,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="m">
+        <div class="selection" data-rarity="4" data-gender="m" data-element="lig" data-path="des">
             
             <img src="../img/arlan.png" alt="Image">
 
@@ -301,7 +428,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="lig" data-path="hun">
             
             <img src="../img/ash.png" alt="Image">
 
@@ -309,7 +436,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="fir" data-path="har">
             
             <img src="../img/asta.png" alt="Image">
 
@@ -317,7 +444,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="ima" data-path="pre">
             
             <img src="../img/aven.png" alt="Image">
 
@@ -325,7 +452,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="qua" data-path="ela">
             
             <img src="../img/waven.png" alt="Image">
 
@@ -333,7 +460,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="f">
+        <div class="selection" data-rarity="npc" data-gender="f" data-element="" data-path="">
 
             <img src="../img/baiheng.png" alt="Image">
 
@@ -341,7 +468,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="lig" data-path="abu">
 
             <img src="../img/bailu.png" alt="Image">
 
@@ -349,7 +476,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="win" data-path="nih">
 
             <img src="../img/bs.png" alt="Image">
 
@@ -357,7 +484,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="win" data-path="des">
 
             <img src="../img/blade.png" alt="Image">
 
@@ -365,7 +492,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="phy" data-path="hun">
 
             <img src="../img/boothill.png" alt="Image">
 
@@ -373,7 +500,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="win" data-path="har">
 
             <img src="../img/bronya.png" alt="Image">
 
@@ -381,7 +508,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="phy" data-path="des">
 
             <img src="../img/cd.png" alt="Image">
 
@@ -389,7 +516,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="fir" data-path="pre">
 
             <img src="../img/cp.png" alt="Image">
 
@@ -397,7 +524,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="ima" data-path="har">
 
             <img src="../img/ch.png" alt="Image">
 
@@ -405,7 +532,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="ice" data-path="rem">
 
             <img src="../img/cr.png" alt="Image">
 
@@ -413,7 +540,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="lig" data-path="ela">
 
             <img src="../img/ce.png" alt="Image">
 
@@ -421,7 +548,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="f">
+        <div class="selection" data-rarity="npc" data-gender="f" data-element="" data-path="">
 
             <img src="../img/calypso.png" alt="Image">
 
@@ -429,7 +556,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="qua" data-path="rem">
 
             <img src="../img/cass.png" alt="Image">
 
@@ -437,7 +564,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="win" data-path="har">
 
             <img src="../img/cerydra.png" alt="Image">
 
@@ -445,7 +572,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="qua" data-path="nih">
 
             <img src="../img/cipher.png" alt="Image">
 
@@ -453,7 +580,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="phy" data-path="des">
 
             <img src="../img/clara.png" alt="Image">
 
@@ -461,7 +588,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="f">
+        <div class="selection" data-rarity="npc" data-gender="f" data-element="" data-path="">
 
             <img src="../img/coco.png" alt="Image">
 
@@ -469,7 +596,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="ice" data-path="rem">
 
             <img src="../img/cyrene.png" alt="Image">
 
@@ -477,7 +604,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="m">
+        <div class="selection" data-rarity="npc" data-gender="m" data-element="" data-path="">
 
             <img src="../img/danfeng.png" alt="Image">
 
@@ -485,7 +612,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="m">
+        <div class="selection" data-rarity="4" data-gender="m" data-element="win" data-path="hun">
 
             <img src="../img/danheng.png" alt="Image">
 
@@ -493,7 +620,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="ima" data-path="des">
 
             <img src="../img/dhil.png" alt="Image">
 
@@ -501,7 +628,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="phy" data-path="pre">
 
             <img src="../img/dhpt.png" alt="Image">
 
@@ -509,7 +636,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="ima" data-path="hun">
 
             <img src="../img/ratio.png" alt="Image">
 
@@ -517,7 +644,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="phy" data-path="ela">
 
             <img src="../img/eva.png" alt="Image">
 
@@ -525,7 +652,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="ice" data-path="rem">
 
             <img src="../img/evernight.png" alt="Image">
 
@@ -533,7 +660,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="win" data-path="hun">
 
             <img src="../img/feixiao.png" alt="Image">
 
@@ -541,7 +668,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="fir" data-path="des">
 
             <img src="../img/firefly.png" alt="Image">
 
@@ -549,7 +676,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="fir" data-path="nih">
 
             <img src="../img/fugue.png" alt="Image">
 
@@ -557,7 +684,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="qua" data-path="pre">
 
             <img src="../img/fuxuan.png" alt="Image">
 
@@ -565,7 +692,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="m">
+        <div class="selection" data-rarity="4" data-gender="m" data-element="fir" data-path="abu">
 
             <img src="../img/gallagher.png" alt="Image">
 
@@ -573,7 +700,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="ice" data-path="pre">
 
             <img src="../img/gepard.png" alt="Image">
 
@@ -581,7 +708,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="lig" data-path="des">
 
             <img src="../img/gilg.png" alt="Image">
 
@@ -589,7 +716,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="fir" data-path="nih">
 
             <img src="../img/guigui.png" alt="Image">
 
@@ -597,7 +724,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="phy" data-path="har">
 
             <img src="../img/hanya.png" alt="Image">
 
@@ -605,7 +732,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="ice" data-path="eru">
 
             <img src="../img/herta.png" alt="Image">
 
@@ -613,7 +740,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="fir" data-path="eru">
 
             <img src="../img/himeko.png" alt="Image">
 
@@ -621,7 +748,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="fir" data-path="eru">
 
             <img src="../img/hnova.png" alt="Image">
 
@@ -629,7 +756,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="fir" data-path="des">
 
             <img src="../img/hook.png" alt="Image">
 
@@ -637,7 +764,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="win" data-path="abu">
 
             <img src="../img/huhu.png" alt="Image">
 
@@ -645,7 +772,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="win" data-path="rem">
 
             <img src="../img/hyacine.png" alt="Image">
 
@@ -653,7 +780,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="phy" data-path="nih">
 
             <img src="../img/hysilens.png" alt="Image">
 
@@ -661,7 +788,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="qua" data-path="eru">
 
             <img src="../img/jade.png" alt="Image">
 
@@ -669,7 +796,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="fir" data-path="nih">
 
             <img src="../img/jiaoqiu.png" alt="Image">
 
@@ -677,7 +804,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="ice" data-path="des">
 
             <img src="../img/jingliu.png" alt="Image">
 
@@ -685,7 +812,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="lig" data-path="eru">
 
             <img src="../img/jingyuan.png" alt="Image">
 
@@ -693,7 +820,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="lig" data-path="nih">
 
             <img src="../img/kafka.png" alt="Image">
 
@@ -701,7 +828,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="fir" data-path="abu">
 
             <img src="../img/lingsha.png" alt="Image">
 
@@ -709,7 +836,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="m">
+        <div class="selection" data-rarity="4" data-gender="m" data-element="phy" data-path="nih">
 
             <img src="../img/luka.png" alt="Image">
 
@@ -717,7 +844,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="ima" data-path="abu">
 
             <img src="../img/luocha.png" alt="Image">
 
@@ -725,7 +852,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="m">
+        <div class="selection" data-rarity="npc" data-gender="m" data-element="" data-path="">
 
             <img src="../img/lygus.png" alt="Image">
 
@@ -733,7 +860,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="qua" data-path="abu">
 
             <img src="../img/lynx.png" alt="Image">
 
@@ -741,7 +868,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="ice" data-path="pre">
 
             <img src="../img/m7.png" alt="Image">
 
@@ -749,7 +876,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="ima" data-path="hun">
 
             <img src="../img/m7h.png" alt="Image">
 
@@ -757,7 +884,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="m">
+        <div class="selection" data-rarity="4" data-gender="m" data-element="ice" data-path="des">
 
             <img src="../img/misha.png" alt="Image">
 
@@ -765,7 +892,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="fir" data-path="nih">
 
             <img src="../img/mblade.png" alt="Image">
 
@@ -773,7 +900,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="m">
+        <div class="selection" data-rarity="4" data-gender="m" data-element="lig" data-path="hun">
 
             <img src="../img/moze.png" alt="Image">
 
@@ -781,7 +908,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="ima" data-path="des">
 
             <img src="../img/mydei.png" alt="Image">
 
@@ -789,7 +916,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="phy" data-path="abu">
 
             <img src="../img/nat.png" alt="Image">
 
@@ -797,7 +924,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="f">
+        <div class="selection" data-rarity="npc" data-gender="f" data-element="" data-path="">
 
             <img src="../img/nihilux.png" alt="Image">
 
@@ -805,7 +932,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="ice" data-path="ela">
 
             <img src="../img/pearl.png" alt="Image">
 
@@ -813,7 +940,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="ice" data-path="nih">
 
             <img src="../img/pela.png" alt="Image">
 
@@ -821,7 +948,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="phy" data-path="des">
 
             <img src="../img/phainon.png" alt="Image">
 
@@ -829,7 +956,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="qua" data-path="eru">
 
             <img src="../img/qq.png" alt="Image">
 
@@ -837,7 +964,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="ima" data-path="eru">
 
             <img src="../img/rappa.png" alt="Image">
 
@@ -845,7 +972,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="m">
+        <div class="selection" data-rarity="npc" data-gender="m" data-element="" data-path="">
 
             <img src="../img/reca.png" alt="Image">
 
@@ -853,7 +980,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="qua" data-path="eru">
 
             <img src="../img/rin.png" alt="Image">
 
@@ -861,7 +988,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="phy" data-path="har">
 
             <img src="../img/robin.png" alt="Image">
 
@@ -869,7 +996,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="win" data-path="rem">
 
             <img src="../img/srobin.png" alt="Image">
 
@@ -877,7 +1004,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="ice" data-path="har">
 
             <img src="../img/ruanmei.png" alt="Image">
 
@@ -885,7 +1012,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="win" data-path="des">
 
             <img src="../img/saber.png" alt="Image">
 
@@ -893,7 +1020,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="m">
+        <div class="selection" data-rarity="4" data-gender="m" data-element="win" data-path="nih">
 
             <img src="../img/sampo.png" alt="Image">
 
@@ -901,7 +1028,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="m">
+        <div class="selection" data-rarity="npc" data-gender="m" data-element="" data-path="">
 
             <img src="../img/screwllum.png" alt="Image">
 
@@ -909,7 +1036,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="qua" data-path="hun">
 
             <img src="../img/seele.png" alt="Image">
 
@@ -917,7 +1044,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="lig" data-path="eru">
 
             <img src="../img/serval.png" alt="Image">
 
@@ -925,7 +1052,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="qua" data-path="nih">
 
             <img src="../img/sw.png" alt="Image">
 
@@ -933,7 +1060,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="ima" data-path="ela">
 
             <img src="../img/sw999.png" alt="Image">
 
@@ -941,7 +1068,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="f">
+        <div class="selection" data-rarity="npc" data-gender="f" data-element="" data-path="">
 
             <img src="../img/siobhan.png" alt="Image">
 
@@ -949,7 +1076,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="npc" data-gender="m">
+        <div class="selection" data-rarity="npc" data-gender="m" data-element="" data-path="">
 
             <img src="../img/skott.png" alt="Image">
 
@@ -957,7 +1084,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="qua" data-path="har">
 
             <img src="../img/sparkle.png" alt="Image">
 
@@ -965,7 +1092,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="fir" data-path="ela">
 
             <img src="../img/sparxie.png" alt="Image">
 
@@ -973,7 +1100,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="phy" data-path="des">
 
             <img src="../img/sd.png" alt="Image">
 
@@ -981,7 +1108,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="fir" data-path="pre">
 
             <img src="../img/sp.png" alt="Image">
 
@@ -989,7 +1116,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="ima" data-path="har">
 
             <img src="../img/sh.png" alt="Image">
 
@@ -997,7 +1124,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="ice" data-path="rem">
 
             <img src="../img/sr.png" alt="Image">
 
@@ -1005,7 +1132,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="lig" data-path="ela">
 
             <img src="../img/se.png" alt="Image">
 
@@ -1013,7 +1140,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="ima" data-path="har">
 
             <img src="../img/sunday.png" alt="Image">
 
@@ -1021,7 +1148,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="phy" data-path="hun">
 
             <img src="../img/sushang.png" alt="Image">
 
@@ -1029,7 +1156,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="fir" data-path="nih">
 
             <img src="../img/dahlia.png" alt="Image">
 
@@ -1037,7 +1164,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="ice" data-path="eru">
 
             <img src="../img/therta.png" alt="Image">
 
@@ -1045,7 +1172,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="lig" data-path="har">
 
             <img src="../img/tingyun.png" alt="Image">
 
@@ -1053,7 +1180,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="fir" data-path="hun">
 
             <img src="../img/topaz.png" alt="Image">
 
@@ -1061,7 +1188,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="qua" data-path="har">
 
             <img src="../img/tribbie.png" alt="Image">
 
@@ -1069,7 +1196,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="ima" data-path="nih">
 
             <img src="../img/welt.png" alt="Image">
 
@@ -1077,7 +1204,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="qua" data-path="des">
 
             <img src="../img/xueyi.png" alt="Image">
 
@@ -1085,7 +1212,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="m">
+        <div class="selection" data-rarity="5" data-gender="m" data-element="ice" data-path="hun">
 
             <img src="../img/yanqing.png" alt="Image">
 
@@ -1093,7 +1220,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="phy" data-path="ela">
 
             <img src="../img/yg.png" alt="Image">
 
@@ -1101,7 +1228,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="4" data-gender="f">
+        <div class="selection" data-rarity="4" data-gender="f" data-element="ima" data-path="har">
 
             <img src="../img/yukong.png" alt="Image">
 
@@ -1109,7 +1236,7 @@
 
         </div>
 
-        <div class="selection" data-rarity="5" data-gender="f">
+        <div class="selection" data-rarity="5" data-gender="f" data-element="phy" data-path="des">
 
             <img src="../img/yunli.png" alt="Image">
 
@@ -1129,7 +1256,11 @@
         const NPC = document.getElementById("showNPC");
         const hideSelected = document.getElementById("hideSelected");
         const showGender = document.getElementById("showGender");
+        const showType = document.getElementById("showType");
         const resetButton = document.getElementById("resetButton");
+        const infoButton = document.getElementById("infoButton");
+        const infoPopup = document.getElementById("infoPopup");
+        const closeInfo = document.getElementById("closeInfo");
 
         // Filter characters by category
         function filterCharacters() {
@@ -1177,7 +1308,157 @@
             });
         }
 
-        showGender.addEventListener("change", updateGenderEmojis);
+        function updateType() {
+            selections.forEach(selection => {
+                const heading = selection.querySelector("h3");
+                const el = selection.dataset.element;
+                const pa = selection.dataset.path;
+
+                // Save the original name once
+                if (!heading.dataset.originalName) {
+                    heading.dataset.originalName = heading.textContent;
+                }
+
+                if (showType.checked) {
+                    let type = "";
+
+                    if (el === "phy" && pa === "abu") type = " PHY,ABU";
+                    if (el === "phy" && pa === "des") type = " PHY,DES";
+                    if (el === "phy" && pa === "ela") type = " PHY,ELA";
+                    if (el === "phy" && pa === "eru") type = " PHY,ERU";
+                    if (el === "phy" && pa === "har") type = " PHY,HAR";
+                    if (el === "phy" && pa === "hun") type = " PHY,HUN";
+                    if (el === "phy" && pa === "nih") type = " PHY,NIH";
+                    if (el === "phy" && pa === "pre") type = " PHY,PRE";
+                    if (el === "phy" && pa === "rem") type = " PHY,REM";
+
+                    if (el === "fir" && pa === "abu") type = " FIR,ABU";
+                    if (el === "fir" && pa === "des") type = " FIR,DES";
+                    if (el === "fir" && pa === "ela") type = " FIR,ELA";
+                    if (el === "fir" && pa === "eru") type = " FIR,ERU";
+                    if (el === "fir" && pa === "har") type = " FIR,HAR";
+                    if (el === "fir" && pa === "hun") type = " FIR,HUN";
+                    if (el === "fir" && pa === "nih") type = " FIR,NIH";
+                    if (el === "fir" && pa === "pre") type = " FIR,PRE";
+                    if (el === "fir" && pa === "rem") type = " FIR,REM";
+
+                    if (el === "ice" && pa === "abu") type = " ICE,ABU";
+                    if (el === "ice" && pa === "des") type = " ICE,DES";
+                    if (el === "ice" && pa === "ela") type = " ICE,ELA";
+                    if (el === "ice" && pa === "eru") type = " ICE,ERU";
+                    if (el === "ice" && pa === "har") type = " ICE,HAR";
+                    if (el === "ice" && pa === "hun") type = " ICE,HUN";
+                    if (el === "ice" && pa === "nih") type = " ICE,NIH";
+                    if (el === "ice" && pa === "pre") type = " ICE,PRE";
+                    if (el === "ice" && pa === "rem") type = " ICE,REM";
+
+                    if (el === "lig" && pa === "abu") type = " LIG,ABU";
+                    if (el === "lig" && pa === "des") type = " LIG,DES";
+                    if (el === "lig" && pa === "ela") type = " LIG,ELA";
+                    if (el === "lig" && pa === "eru") type = " LIG,ERU";
+                    if (el === "lig" && pa === "har") type = " LIG,HAR";
+                    if (el === "lig" && pa === "hun") type = " LIG,HUN";
+                    if (el === "lig" && pa === "nih") type = " LIG,NIH";
+                    if (el === "lig" && pa === "pre") type = " LIG,PRE";
+                    if (el === "lig" && pa === "rem") type = " LIG,REM";
+
+                    if (el === "win" && pa === "abu") type = " WIN,ABU";
+                    if (el === "win" && pa === "des") type = " WIN,DES";
+                    if (el === "win" && pa === "ela") type = " WIN,ELA";
+                    if (el === "win" && pa === "eru") type = " WIN,ERU";
+                    if (el === "win" && pa === "har") type = " WIN,HAR";
+                    if (el === "win" && pa === "hun") type = " WIN,HUN";
+                    if (el === "win" && pa === "nih") type = " WIN,NIH";
+                    if (el === "win" && pa === "pre") type = " WIN,PRE";
+                    if (el === "win" && pa === "rem") type = " WIN,REM";
+
+                    if (el === "qua" && pa === "abu") type = " QUA,ABU";
+                    if (el === "qua" && pa === "des") type = " QUA,DES";
+                    if (el === "qua" && pa === "ela") type = " QUA,ELA";
+                    if (el === "qua" && pa === "eru") type = " QUA,ERU";
+                    if (el === "qua" && pa === "har") type = " QUA,HAR";
+                    if (el === "qua" && pa === "hun") type = " QUA,HUN";
+                    if (el === "qua" && pa === "nih") type = " QUA,NIH";
+                    if (el === "qua" && pa === "pre") type = " QUA,PRE";
+                    if (el === "qua" && pa === "rem") type = " QUA,REM";
+
+                    if (el === "ima" && pa === "abu") type = " IMA,ABU";
+                    if (el === "ima" && pa === "des") type = " IMA,DES";
+                    if (el === "ima" && pa === "ela") type = " IMA,ELA";
+                    if (el === "ima" && pa === "eru") type = " IMA,ERU";
+                    if (el === "ima" && pa === "har") type = " IMA,HAR";
+                    if (el === "ima" && pa === "hun") type = " IMA,HUN";
+                    if (el === "ima" && pa === "nih") type = " IMA,NIH";
+                    if (el === "ima" && pa === "pre") type = " IMA,PRE";
+                    if (el === "ima" && pa === "rem") type = " IMA,REM";
+
+                    heading.textContent = heading.dataset.originalName + type;
+                } else {
+                    heading.textContent = heading.dataset.originalName;
+                }
+            });
+        }
+
+        // Open and close the info popup
+        infoButton.addEventListener("click", (event) => {
+            event.stopPropagation();
+
+            const isOpening = infoPopup.hidden;
+
+            infoPopup.hidden = !isOpening;
+            infoButton.setAttribute("aria-expanded", String(isOpening));
+        });
+
+        // Close using the Close button
+        closeInfo.addEventListener("click", () => {
+            infoPopup.hidden = true;
+            infoButton.setAttribute("aria-expanded", "false");
+        });
+
+        // Close when clicking outside the popup
+        document.addEventListener("click", (event) => {
+            if (
+                !infoPopup.hidden &&
+                !infoPopup.contains(event.target) &&
+                !infoButton.contains(event.target)
+            ) {
+                infoPopup.hidden = true;
+                infoButton.setAttribute("aria-expanded", "false");
+            }
+        });
+
+        // Close when scrolling
+        window.addEventListener("scroll", () => {
+            infoPopup.hidden = true;
+            infoButton.setAttribute("aria-expanded", "false");
+        }, { passive: true });
+
+        // Close with Escape
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape" && !infoPopup.hidden) {
+                infoPopup.hidden = true;
+                infoButton.setAttribute("aria-expanded", "false");
+                infoButton.focus();
+            }
+        });
+
+        showGender.addEventListener("change", () => {
+            if (showGender.checked) {
+                showType.checked = false;
+                updateType();
+            }
+
+            updateGenderEmojis();
+        });
+
+        showType.addEventListener("change", () => {
+            if (showType.checked) {
+                showGender.checked = false;
+                updateGenderEmojis();
+            }
+
+            updateType();
+        });
 
         // Listen for changes to the rarity switches
         fourStar.addEventListener("change", filterCharacters);
@@ -1216,6 +1497,7 @@
         // Initial state
         filterCharacters();
         updateGenderEmojis();
+        updateType();
     </script>
 
 </body>
